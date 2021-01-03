@@ -1,3 +1,8 @@
+<?php
+session_start();
+if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['password'])) {
+}
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -5,8 +10,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Art Store</title>
-</head>
-<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
+    <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
 <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
 
 <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
@@ -52,11 +56,14 @@
 <script src="catalog/view/javascript/jquery/swiper/js/swiper.jquery.js"></script>
 <script src="catalog/view/javascript/TemplateTrip/jquery.bpopup.min.js"></script>
 <script src="catalog/view/javascript/TemplateTrip/jquery.cookie.js"></script>
+</head>
+
 
 <body class="common-home">
     <div id="page">
         <header>
-            <div class="header">
+            <?php include 'header.php'?>
+            <!-- <div class="header">
                 <div class="full-header">
                     <div class="container">
                         <div class="header-left">
@@ -95,60 +102,7 @@
                                             <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i
                                                         class="material-icons favorite">favorite</i> <span
                                                         class="hidden-sm hidden-md">Wish List (0)</span></a></li>
-                                            <!-- <li class="ttlanguage">
-                                                <div class="pull-left">
-                                                    <form action="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/language/language" method="post" enctype="multipart/form-data" id="form-language">
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-link">
-
-                                                                <img src="catalog/language/en-gb/en-gb.png"
-                                                                    alt="English" title="English">
-                                                                <span
-                                                                    class="hidden-xs hidden-sm hidden-md">Language</span></button>
-                                                            <ul>
-                                                                <li>
-                                                                    <button class="btn btn-link btn-block language-select" type="button" name="en-gb"><img
-                                                                            src="catalog/language/en-gb/en-gb.png"
-                                                                            alt="English" title="English" />
-                                                                        English</button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="btn btn-link btn-block language-select" type="button" name="ar-lb"><img
-                                                                            src="catalog/language/ar-lb/ar-lb.png"
-                                                                            alt="Arabic" title="Arabic" />
-                                                                        Arabic</button>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <input type="hidden" name="code" value="" />
-                                                        <input type="hidden" name="redirect" value="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/home" />
-                                                    </form>
-                                                </div>
-                                            </li>
-                                            <li class="ttcurrency">
-                                                <div class="pull-left">
-                                                    <form action="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/currency/currency" method="post" enctype="multipart/form-data" id="form-currency">
-                                                        <div class="btn-group">
-                                                            <button class="btn btn-link"> <strong>$</strong> <span
-                                                                    class="hidden-xs hidden-sm hidden-md">Currency</span></button>
-                                                            <ul>
-                                                                <li>
-                                                                    <button class="currency-select btn btn-link btn-block" type="button" name="EUR">€ Euro</button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="currency-select btn btn-link btn-block" type="button" name="GBP">£ Pound
-                                                                        Sterling</button>
-                                                                </li>
-                                                                <li>
-                                                                    <button class="currency-select btn btn-link btn-block" type="button" name="USD">$ US Dollar</button>
-                                                                </li>
-                                                            </ul>
-                                                        </div>
-                                                        <input type="hidden" name="code" value="" />
-                                                        <input type="hidden" name="redirect" value="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/home" />
-                                                    </form>
-                                                </div>
-                                            </li> -->
+                                         
                                         </ul>
                                     </li>
                                     <li class="ttcart">
@@ -168,7 +122,6 @@
                                 </ul>
                             </div>
                         </div>
-                        <!--<div class="fixhead"></div>-->
                         <div class="header-top-left">
                             <div class="header-left-cms">
                                 <aside id="header-left">
@@ -480,7 +433,7 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </header>
         <div class="header-content-title">
 
