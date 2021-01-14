@@ -113,7 +113,7 @@ if (isset($_SESSION['id'])&&isset($_SESSION['email'])&&isset($_SESSION['password
 			<?php
 			if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['telephone']) && !empty($_POST['confirm'])) {
 				$userModel = new UserModel();
-				$getUser = $userModel->getUser($_POST['email']);
+				$getUser = $userModel->getUserByEmail($_POST['email']);
 				$user = new User($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['password'], $_POST['telephone']);
 
 				if ($_POST['password'] == $_POST['confirm'] && $getUser == null && $_POST['agree'] == 1) {

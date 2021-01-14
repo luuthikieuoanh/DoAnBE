@@ -176,8 +176,13 @@ if (isset($_POST['submit'])) {
 									<div class="form-group">
 										<label class="control-label" for="input-password">Password</label>
 										<input type="password" name="password" value="<?php echo $password?>" placeholder="Password" id="input-password" class="form-control" />
+										<div style="text-align:right;">
+											<input type="checkbox" name="remember" value="1" class="form-control">
+											<label>Remember me</label>
+										</div>
+
 										<!-- <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/forgotten">Forgotten Password</a></div> -->
-										<input type="submit" value="Login" class="btn btn-primary" />
+										<input type="submit" name="submit" value="Login" class="btn btn-primary" />
 								</form>
 							</div>
 						</div>
