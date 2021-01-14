@@ -1,17 +1,10 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['password'])) {
-    header('Location:login.php');
-}?>
-
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>My Account</title>
+	<title>Change Password</title>
 	<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
 	<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
 
@@ -58,13 +51,15 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 
 </head>
 
-<body class="account-account">
+<body class="account-password">
 	<div id="page">
 		<header>
-		<?php include 'header.php'?>
+			<?php include 'header.php' ?>
 		</header>
 		<div class="header-content-title">
+
 		</div>
+
 		<script>
 			$(document).ready(function() {
 				/* ---------------- start Templatetrip link more menu ----------------------*/
@@ -94,69 +89,38 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 			});
 		</script>
 
-		<div id="account-account" class="container">
+		<div id="account-password" class="container">
 			<ul class="breadcrumb">
 				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/home"><i class="material-icons">home</i></a></li>
 				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account">Account</a></li>
+				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/password">Change Password</a></li>
 			</ul>
 			<div class="row">
 				<div id="content" class="col-sm-12">
-					<h1 class="page-title">My account</h1>
-
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>My account</h2>
+					<h1>Change Password</h1>
+					<form action="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/password" method="post" enctype="multipart/form-data" class="form-horizontal">
+						<fieldset>
+							<legend>Your Password</legend>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-password">Password</label>
+								<div class="col-sm-10">
+									<input type="password" name="password" value="" placeholder="Password" id="input-password" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-confirm">Password Confirm</label>
+								<div class="col-sm-10">
+									<input type="password" name="confirm" value="" placeholder="Password Confirm" id="input-confirm" class="form-control" />
+								</div>
+							</div>
+						</fieldset>
+						<div class="buttons clearfix">
+							<div class="pull-left"><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account" class="btn btn-default">Back</a></div>
+							<div class="pull-right">
+								<input type="submit" value="Continue" class="btn btn-primary" />
+							</div>
 						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/edit">Edit your account information</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/password">Change your password</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/address">Modify your address book entries</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist">Modify your wish list</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>My Orders</h2>
-						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/order">Order History</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/download">Downloads</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/reward">Your Reward Points</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/return">Returns</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/transaction">Transactions</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/recurring">Payment Profile</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>My Affiliate Account</h2>
-						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/affiliate/add">Register for an affiliate account</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>Newsletter</h2>
-						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/newsletter">Newsletter</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
+					</form>
 					<script>
 						var Tawk_API = {},
 							$_Tawk_LoadStart = new Date();
@@ -358,7 +322,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 			<div class="bottom-footer">
 				<div class="container bottom-to-top hb-animate-element">
 					<div class="footer-bottom col-sm-5">
-						<p>Powered By <a href="http://www.opencart.com">OpenCart</a> Your Store &copy; 2020</p>
+						<p>Powered By <a href="http://www.opencart.com">OpenCart</a> Your Store &copy; 2021</p>
 					</div>
 					<div class="block-social col-sm-7">
 						<div class="footer-bottom-cms">
@@ -398,7 +362,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 			</div>
 		</footer>
 	</div>
-<!-- 
+
 	<script>
 		var tt_live_search = {
 			selector: '#search input[name=\'search\']',
@@ -498,8 +462,8 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 				}
 			});
 		});
-		
-	</script> -->
+		//
+	</script>
 
 
 	<!--

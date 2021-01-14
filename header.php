@@ -31,7 +31,7 @@
                                     <li><a href="register.php"><i class='material-icons reg-person'>person</i> Register</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons favorite">favorite</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li>
                                 <?php } else { ?>
-                                    <li><a href="account.php"><i class='material-icons ma-user'>perm_identity</i> My account</a></li>
+                                    <li><a href="account.php?id=<?php echo $_SESSION['id']?>"><i class='material-icons ma-user'>perm_identity</i> My account</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/order"><i class='material-icons calendar-today'>calendar_today</i> Order History</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/transaction"><i class='material-icons credit-card'>credit_card</i> Transactions</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons icon-wishlist">favorite_border</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li>

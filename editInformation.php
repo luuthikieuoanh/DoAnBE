@@ -1,9 +1,3 @@
-<?php
-session_start();
-
-if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['password'])) {
-    header('Location:login.php');
-}?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -11,7 +5,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>My Account</title>
+	<title>Edit information</title>
 	<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
 	<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
 
@@ -34,6 +28,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 
 	<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/lightbox.css" rel="stylesheet" type="text/css" />
 
+	<link href="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
 
 	<script src="catalog/view/javascript/common.js"></script>
 
@@ -53,18 +48,23 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 
 	<link href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/catalog/cart.png" rel="icon" />
 
+	<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment.min.js"></script>
+	<script src="catalog/view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js"></script>
+	<script src="catalog/view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js"></script>
 	<script src="catalog/view/javascript/TemplateTrip/jquery.bpopup.min.js"></script>
 	<script src="catalog/view/javascript/TemplateTrip/jquery.cookie.js"></script>
 
 </head>
 
-<body class="account-account">
+<body class="account-edit">
 	<div id="page">
 		<header>
 		<?php include 'header.php'?>
 		</header>
 		<div class="header-content-title">
+
 		</div>
+
 		<script>
 			$(document).ready(function() {
 				/* ---------------- start Templatetrip link more menu ----------------------*/
@@ -94,69 +94,50 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 			});
 		</script>
 
-		<div id="account-account" class="container">
+		<div id="account-edit" class="container">
 			<ul class="breadcrumb">
 				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/home"><i class="material-icons">home</i></a></li>
 				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account">Account</a></li>
+				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/edit">Edit Information</a></li>
 			</ul>
 			<div class="row">
 				<div id="content" class="col-sm-12">
-					<h1 class="page-title">My account</h1>
-
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>My account</h2>
+					<h1>My Account Information</h1>
+					<form action="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/edit" method="post" enctype="multipart/form-data" class="form-horizontal">
+						<fieldset>
+							<legend>Your Personal Details</legend>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-firstname">First Name </label>
+								<div class="col-sm-10">
+									<input type="text" name="firstname" value="Bao" placeholder="First Name" id="input-firstname" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-lastname">Last Name</label>
+								<div class="col-sm-10">
+									<input type="text" name="lastname" value="Ngoc" placeholder="Last Name" id="input-lastname" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-email">Your email address</label>
+								<div class="col-sm-10">
+									<input type="email" name="email" value="phbaongoc2001@gmail.com" placeholder="Your email address" id="input-email" class="form-control" />
+								</div>
+							</div>
+							<div class="form-group required">
+								<label class="col-sm-2 control-label" for="input-telephone">Telephone</label>
+								<div class="col-sm-10">
+									<input type="tel" name="telephone" value="0933018608" placeholder="Telephone" id="input-telephone" class="form-control" />
+								</div>
+							</div>
+						</fieldset>
+						<div class="buttons clearfix">
+							<div class="pull-left"><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account" class="btn btn-default">Back</a></div>
+							<div class="pull-right">
+								<input type="submit" value="Continue" class="btn btn-primary" />
+							</div>
 						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/edit">Edit your account information</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/password">Change your password</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/address">Modify your address book entries</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist">Modify your wish list</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>My Orders</h2>
-						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/order">Order History</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/download">Downloads</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/reward">Your Reward Points</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/return">Returns</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/transaction">Transactions</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/recurring">Payment Profile</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>My Affiliate Account</h2>
-						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/affiliate/add">Register for an affiliate account</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
-					<div class="a-link-list">
-						<div class="a-link-heading">
-							<h2>Newsletter</h2>
-						</div>
-						<div class="a-link-content">
-							<ul class="list-unstyled">
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/newsletter">Newsletter</a></li>
-							</ul>
-						</div><!-- a-link-content END -->
-					</div>
-
+					</form>
 					<script>
 						var Tawk_API = {},
 							$_Tawk_LoadStart = new Date();
@@ -175,6 +156,98 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 				</div>
 			</div>
 		</div>
+		<script type="text/javascript">
+			// Sort the custom fields
+			$('.form-group[data-sort]').detach().each(function() {
+				if ($(this).attr('data-sort') >= 0 && $(this).attr('data-sort') <= $('.form-group').length) {
+					$('.form-group').eq($(this).attr('data-sort')).before(this);
+				}
+
+				if ($(this).attr('data-sort') > $('.form-group').length) {
+					$('.form-group:last').after(this);
+				}
+
+				if ($(this).attr('data-sort') == $('.form-group').length) {
+					$('.form-group:last').after(this);
+				}
+
+				if ($(this).attr('data-sort') < -$('.form-group').length) {
+					$('.form-group:first').before(this);
+				}
+			});
+		</script>
+		<script type="text/javascript">
+			$('button[id^=\'button-custom-field\']').on('click', function() {
+				var element = this;
+
+				$('#form-upload').remove();
+
+				$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+				$('#form-upload input[name=\'file\']').trigger('click');
+
+				if (typeof timer != 'undefined') {
+					clearInterval(timer);
+				}
+
+				timer = setInterval(function() {
+					if ($('#form-upload input[name=\'file\']').val() != '') {
+						clearInterval(timer);
+
+						$.ajax({
+							url: 'index.php?route=tool/upload',
+							type: 'post',
+							dataType: 'json',
+							data: new FormData($('#form-upload')[0]),
+							cache: false,
+							contentType: false,
+							processData: false,
+							beforeSend: function() {
+								$(element).button('loading');
+							},
+							complete: function() {
+								$(element).button('reset');
+							},
+							success: function(json) {
+								$(element).parent().find('.text-danger').remove();
+
+								if (json['error']) {
+									$(element).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+								}
+
+								if (json['success']) {
+									alert(json['success']);
+
+									$(element).parent().find('input').val(json['code']);
+								}
+							},
+							error: function(xhr, ajaxOptions, thrownError) {
+								alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+							}
+						});
+					}
+				}, 500);
+			});
+			//-->
+		</script>
+		<script type="text/javascript">
+			$('.date').datetimepicker({
+				language: 'en-gb',
+				pickTime: false
+			});
+
+			$('.datetime').datetimepicker({
+				language: 'en-gb',
+				pickDate: true,
+				pickTime: true
+			});
+
+			$('.time').datetimepicker({
+				language: 'en-gb',
+				pickDate: false
+			});
+			//-->
+		</script>
 		<footer>
 
 			<div class="footer-top-cms col-sm-12">
@@ -358,7 +431,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 			<div class="bottom-footer">
 				<div class="container bottom-to-top hb-animate-element">
 					<div class="footer-bottom col-sm-5">
-						<p>Powered By <a href="http://www.opencart.com">OpenCart</a> Your Store &copy; 2020</p>
+						<p>Powered By <a href="http://www.opencart.com">OpenCart</a> Your Store &copy; 2021</p>
 					</div>
 					<div class="block-social col-sm-7">
 						<div class="footer-bottom-cms">
@@ -398,7 +471,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 			</div>
 		</footer>
 	</div>
-<!-- 
+
 	<script>
 		var tt_live_search = {
 			selector: '#search input[name=\'search\']',
@@ -498,8 +571,8 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 				}
 			});
 		});
-		
-	</script> -->
+		//-->
+	</script>
 
 
 	<!--

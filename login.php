@@ -11,9 +11,10 @@ $message = '';
 
 if (!empty($_POST['email']) && !empty($_POST['password'])) {
 	$getUser = $user->getUser($_POST['email']);
-	var_dump($getUser);
+	// var_dump($getUser);
 	// loại bỏ phần tử đầu tiên của mảng - trả về phần tử đầu tiên đã bị loại bỏ
 	$getUser = array_shift($getUser);
+	
 	// 
 	$id = $getUser['user_id'];
 	$emailDB =  $getUser['user_email'];
@@ -38,7 +39,6 @@ if (!empty($_POST['email']) && !empty($_POST['password'])) {
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
