@@ -1,28 +1,3 @@
-<?php
-session_start();
-require_once './config/database.php';
-require_once './config/config.php';
-spl_autoload_register(function ($class_name) {
-	require './app/models/' . $class_name . '.php';
-});
-
-$userModel = new UserModel();
-$message = "";
-if (isset($_SESSION['id']) && isset($_POST['password'])) {
-	$item = $userModel->getUserByID($_SESSION['id']);
-	$getUser = array_shift($item);
-	$pass = $getUser['user_password'];
-	
-	$pw = (password_verify($_POST['password'], $pass)) ? true : false;
-	if ($pw == true && $_POST['confirm'] == $_POST['input_password']) {
-		$change = $userModel->editPass($_SESSION['id'], password_hash($_POST['confirm'], PASSWORD_DEFAULT));
-		if ($change) {
-			header('location:account.php?message=1');
-		}
-	}
-}
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -123,29 +98,13 @@ if (isset($_SESSION['id']) && isset($_POST['password'])) {
 			<div class="row">
 				<div id="content" class="col-sm-12">
 					<h1>Change Password</h1>
-					<?php
-					if (isset($_POST['password'])) {
-						if ($pw == false || $_POST['confirm'] != $_POST['input_password']) {
-							$message = '<div class="alert alert-danger">
-								 <strong>Danger!</strong> Saved failed
-							  </div>';
-							echo $message;
-						}
-					}
-					?>
-					<form action="changePassword.php" method="post" enctype="multipart/form-data" class="form-horizontal">
+					<form action="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/password" method="post" enctype="multipart/form-data" class="form-horizontal">
 						<fieldset>
 							<legend>Your Password</legend>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="input-password">Password</label>
 								<div class="col-sm-10">
 									<input type="password" name="password" value="" placeholder="Password" id="input-password" class="form-control" />
-								</div>
-							</div>
-							<div class="form-group required">
-								<label class="col-sm-2 control-label" for="input-password">Password New</label>
-								<div class="col-sm-10">
-									<input type="password" name="input_password" value="" placeholder="Password" id="input-password" class="form-control" />
 								</div>
 							</div>
 							<div class="form-group required">
@@ -156,7 +115,7 @@ if (isset($_SESSION['id']) && isset($_POST['password'])) {
 							</div>
 						</fieldset>
 						<div class="buttons clearfix">
-							<div class="pull-left"><a href="acount.php" class="btn btn-default">Back</a></div>
+							<div class="pull-left"><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account" class="btn btn-default">Back</a></div>
 							<div class="pull-right">
 								<input type="submit" value="Continue" class="btn btn-primary" />
 							</div>

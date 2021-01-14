@@ -1,7 +1,16 @@
 <?php
+require_once './config/database.php';
+spl_autoload_register(function ($class_name) {
+    require './app/models/' . $class_name . '.php';
+});
 session_start();
-if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['password'])) {
+if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['password'])) {
 }
+$productModel = new ProductModel();
+$page = 1;
+$perpage = 2;
+$totalRow = $productModel->getTotalRow();
+$numberPage = ceil($totalRow / $perpage);
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -11,429 +20,59 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Modern Art Store</title>
     <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
-<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
+    <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
 
-<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-<link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700&display=swap" rel="stylesheet">
 
-<!--<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />-->
-<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-<!--<link href="catalog/view/theme//stylesheet/TemplateTrip/bootstrap.min.css" rel="stylesheet" media="screen" />-->
+    <!--<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />-->
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <!--<link href="catalog/view/theme//stylesheet/TemplateTrip/bootstrap.min.css" rel="stylesheet" media="screen" />-->
 
-<link href="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.css" rel="stylesheet" media="screen" />
-<link href="catalog/view/javascript/jquery/owl-carousel/owl.theme.default.min.css" rel="stylesheet" media="screen" />
-<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/bootstrap.min.css" rel="stylesheet" media="screen" />
-<link href="catalog/view/theme/OPC009_04/stylesheet/stylesheet.css" rel="stylesheet">
-<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/ttblogstyle.css" rel="stylesheet" type="text/css" />
-<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/category-feature.css" rel="stylesheet" type="text/css" />
-<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/newsletter.css" rel="stylesheet" type="text/css" />
-<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/animate.css" rel="stylesheet" type="text/css" />
-<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/ttcountdown.css" rel="stylesheet" type="text/css" />
+    <link href="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.css" rel="stylesheet" media="screen" />
+    <link href="catalog/view/javascript/jquery/owl-carousel/owl.theme.default.min.css" rel="stylesheet" media="screen" />
+    <link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/bootstrap.min.css" rel="stylesheet" media="screen" />
+    <link href="catalog/view/theme/OPC009_04/stylesheet/stylesheet.css" rel="stylesheet">
+    <link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/ttblogstyle.css" rel="stylesheet" type="text/css" />
+    <link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/category-feature.css" rel="stylesheet" type="text/css" />
+    <link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/newsletter.css" rel="stylesheet" type="text/css" />
+    <link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/animate.css" rel="stylesheet" type="text/css" />
+    <link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/ttcountdown.css" rel="stylesheet" type="text/css" />
 
-<link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/lightbox.css" rel="stylesheet" type="text/css" />
+    <link href="catalog/view/theme/OPC009_04/stylesheet/TemplateTrip/lightbox.css" rel="stylesheet" type="text/css" />
 
-<link href="catalog/view/javascript/jquery/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
-<link href="catalog/view/javascript/jquery/swiper/css/opencart.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="catalog/view/javascript/jquery/swiper/css/swiper.min.css" type="text/css" rel="stylesheet" media="screen" />
+    <link href="catalog/view/javascript/jquery/swiper/css/opencart.css" type="text/css" rel="stylesheet" media="screen" />
 
-<script src="catalog/view/javascript/common.js"></script>
+    <script src="catalog/view/javascript/common.js"></script>
 
-<!-- TemplateTrip custom Theme JS START -->
-<script src="catalog/view/javascript/TemplateTrip/addonScript.js"></script>
-<!-- <script src="catalog/view/javascript/TemplateTrip/tt_quickview.js"></script> -->
-<script src="catalog/view/javascript/TemplateTrip/inview.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/parallex.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/theia-sticky-sidebar.min.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/ResizeSensor.min.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/lightbox-2.6.min.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/waypoints.min.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/bootstrap-notify.min.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/ttcountdown.js"></script>
-<script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js"></script>
-<!-- TemplateTrip custom Theme JS END -->
+    <!-- TemplateTrip custom Theme JS START -->
+    <script src="catalog/view/javascript/TemplateTrip/addonScript.js"></script>
+    <!-- <script src="catalog/view/javascript/TemplateTrip/tt_quickview.js"></script> -->
+    <script src="catalog/view/javascript/TemplateTrip/inview.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/parallex.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/theia-sticky-sidebar.min.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/ResizeSensor.min.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/lightbox-2.6.min.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/waypoints.min.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/bootstrap-notify.min.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/ttcountdown.js"></script>
+    <script src="catalog/view/javascript/jquery/owl-carousel/owl.carousel.min.js"></script>
+    <!-- TemplateTrip custom Theme JS END -->
 
-<link href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/catalog/cart.png" rel="icon" />
+    <link href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/catalog/cart.png" rel="icon" />
 
-<script src="catalog/view/javascript/jquery/swiper/js/swiper.jquery.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/jquery.bpopup.min.js"></script>
-<script src="catalog/view/javascript/TemplateTrip/jquery.cookie.js"></script>
+    <script src="catalog/view/javascript/jquery/swiper/js/swiper.jquery.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/jquery.bpopup.min.js"></script>
+    <script src="catalog/view/javascript/TemplateTrip/jquery.cookie.js"></script>
 </head>
 
 
 <body class="common-home">
     <div id="page">
         <header>
-            <?php include 'header.php'?>
-            <!-- <div class="header">
-                <div class="full-header">
-                    <div class="container">
-                        <div class="header-left">
-                            <div id="logo">
-                                <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/home"><img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/catalog/logo.png" title="Your Store" alt="Your Store" class="img-responsive" /></a>
-                            </div>
-                        </div>
-
-                        <div class="header-top-right">
-                            <div id="top-links" class="nav pull-right">
-                                <ul class="list-inline">
-                                    <li class="ttsearch">
-                                        <div id="search" class="input-group">
-                                            <span class="ttsearch_button">
-                                                <i class="material-icons icon-search">search</i>
-                                                <i class="material-icons icon-close">clear</i>
-                                            </span>
-                                            <div class="ttsearchtoggle">
-                                                <input type="text" name="search" value="" placeholder="Search" class="form-control input-lg" />
-                                                <span class="input-group-btn">
-                                                    <button type="button" class="btn btn-default btn-lg"><i
-                                                            class="material-icons icon-search">search</i></button>
-                                                </span>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="account-nav dropdown header_user_info"><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account" title="Account" class="dropdown-toggle" data-toggle="dropdown"><i
-                                                class="material-icons user">perm_identity</i><span
-                                                class="ttuserheading">Account</span><i
-                                                class="material-icons expand-more">expand_more</i></a>
-                                        <ul class="dropdown-menu dropdown-menu-right account-link-toggle">
-                                            <li><a href="login.php"><i
-                                                        class="material-icons">lock</i> Login</a></li>
-                                            <li><a href="register.php"><i
-                                                        class='material-icons reg-person'>person</i> Register</a></li>
-                                            <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i
-                                                        class="material-icons favorite">favorite</i> <span
-                                                        class="hidden-sm hidden-md">Wish List (0)</span></a></li>
-                                         
-                                        </ul>
-                                    </li>
-                                    <li class="ttcart">
-                                        <div id="cart" class="btn-group">
-                                            <button type="button" data-toggle="dropdown" data-loading-text="Loading..." class="btn btn-inverse btn-block btn-lg dropdown-toggle"><i
-                                                    class="material-icons shopping-cart">shopping_cart</i>
-                                                <span id="cart-total">0</span>
-
-                                            </button>
-                                            <ul class="dropdown-menu pull-right header-cart-toggle">
-                                                <li>
-                                                    <p class="text-center">Your shopping cart is empty!</p>
-                                                </li>
-                                            </ul>
-                                        </div>
-                                    </li>
-                                </ul>
-                            </div>
-                        </div>
-                        <div class="header-top-left">
-                            <div class="header-left-cms">
-                                <aside id="header-left">
-                                    <div class="main-category-list left-main-menu">
-                                        <div class="cat-menu">
-                                            <div class="TT-panel-heading">
-                                                <span>menu</span>
-                                            </div>
-                                            <div class="menu-category">
-                                                <ul class="dropmenu">
-                                                    <li class="TT-Sub-List dropdown">
-                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20" class="TT-Category-List">azulejo</a>
-
-
-
-
-                                                        <div class="dropdown-menu">
-                                                            <div class="dropdown-inner">
-                                                                <ul class="list-unstyled childs_1 mega-dropdown-menu columns-4" style="width: 800px;">
-
-                                                                    <li class="dropdown first" style="width: 25%;">
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_123" class="single-dropdown">Petuntse</a>
-
-                                                                        <div class="dropdown-menu">
-                                                                            <div class="dropdown-inner">
-                                                                                <ul class="list-unstyled childs_2">
-
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_126">
-                                                                                            Bone china</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_125">
-                                                                                            Cenosphere</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_124">
-                                                                                            Fritware</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_132">
-                                                                                            Lumicera</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_127">
-                                                                                            Pitchers</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_128">
-                                                                                            Vinogel</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="">
-                                                                                        </a>
-                                                                                    </li>
-
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </li>
-
-                                                                    <li class="dropdown first" style="width: 25%;">
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_118" class="single-dropdown">Vinogel</a>
-
-                                                                        <div class="dropdown-menu">
-                                                                            <div class="dropdown-inner">
-                                                                                <ul class="list-unstyled childs_2">
-
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_119">
-                                                                                            fruits</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_122">
-                                                                                            Geopolymer</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_121">
-                                                                                            grog</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_120">
-                                                                                            Lumicera</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_133">
-                                                                                            Lumicera</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_129">
-                                                                                            Vinogel</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="">
-                                                                                        </a>
-                                                                                    </li>
-
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </li>
-
-                                                                    <li class="dropdown first" style="width: 25%;">
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_26" class="single-dropdown">Nile silt</a>
-
-                                                                        <div class="dropdown-menu">
-                                                                            <div class="dropdown-inner">
-                                                                                <ul class="list-unstyled childs_2">
-
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_61">
-                                                                                            fruits</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_85">
-                                                                                            Geopolymer</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_60">
-                                                                                            Lumicera</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_134">
-                                                                                            Lumicera</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_59">
-                                                                                            Petuntse</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_130">
-                                                                                            Vinogel</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="">
-                                                                                        </a>
-                                                                                    </li>
-
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </li>
-
-                                                                    <li class="dropdown first" style="width: 25%;">
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_92" class="single-dropdown">Jesmonite</a>
-
-                                                                        <div class="dropdown-menu">
-                                                                            <div class="dropdown-inner">
-                                                                                <ul class="list-unstyled childs_2">
-
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_135">
-                                                                                            Lumicera</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_95">
-                                                                                            Nile silt</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_96">
-                                                                                            Petuntse</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_93">
-                                                                                            Pitchers</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_94">
-                                                                                            Pitchers</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_131">
-                                                                                            Vinogel</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="">
-                                                                                        </a>
-                                                                                    </li>
-
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                    </li>
-                                                    <li class="TT-Sub-List dropdown">
-                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=25" class="TT-Category-List">Pottery</a>
-
-
-
-
-                                                        <div class="dropdown-menu">
-                                                            <div class="dropdown-inner">
-                                                                <ul class="list-unstyled childs_1 mega-dropdown-menu columns-2" style="width: 400px;">
-
-                                                                    <li class="dropdown first" style="width: 50%;">
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=25_98" class="single-dropdown">vegtables</a>
-
-                                                                        <div class="dropdown-menu">
-                                                                            <div class="dropdown-inner">
-                                                                                <ul class="list-unstyled childs_2">
-
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_139">
-                                                                                            Vinogel</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_102">
-                                                                                            Cenosphere</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_101">
-                                                                                            fruits</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_141">
-                                                                                            fruits</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_140">
-                                                                                            Nile silt</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_100">
-                                                                                            Stoneware</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="">
-                                                                                        </a>
-                                                                                    </li>
-
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </li>
-
-                                                                    <li class="dropdown first" style="width: 50%;">
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=25_99" class="single-dropdown">Petuntse</a>
-
-                                                                        <div class="dropdown-menu">
-                                                                            <div class="dropdown-inner">
-                                                                                <ul class="list-unstyled childs_2">
-
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_104">
-                                                                                            Bone china</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_137">
-                                                                                            dry fruits</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_105">
-                                                                                            Fire clay</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_136">
-                                                                                            Lumicera</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_103">
-                                                                                            Petuntse</a>
-                                                                                    </li>
-                                                                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_138">
-                                                                                            vegtables</a>
-                                                                                    </li>
-                                                                                    <li>
-                                                                                        <a href="">
-                                                                                        </a>
-                                                                                    </li>
-
-                                                                                </ul>
-                                                                            </div>
-                                                                        </div>
-
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                    </li>
-                                                    <li class="TT-Sub-List dropdown">
-                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=65" class="TT-Category-List">Cameo</a>
-
-
-
-
-                                                        <div class="dropdown-menu">
-                                                            <div class="dropdown-inner">
-                                                                <ul class="list-unstyled childs_1 single-dropdown-menu">
-                                                                    <li class="dropdown" style="width: 100%;">
-
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=65_114">Lumicera</a>
-
-
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                    </li>
-                                                    <li class="TT-Sub-List">
-                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66">Pewter</a>
-
-
-                                                    </li>
-                                                    <li class="TT-Sub-List dropdown">
-                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=67" class="TT-Category-List">clothes</a>
-
-
-
-
-                                                        <div class="dropdown-menu">
-                                                            <div class="dropdown-inner">
-                                                                <ul class="list-unstyled childs_1 single-dropdown-menu">
-                                                                    <li class="dropdown" style="width: 100%;">
-                                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=67_116">jacket</a>
-                                                                    </li>
-                                                                </ul>
-                                                            </div>
-                                                        </div>
-
-                                                    </li>
-                                                    <li class="TT-Sub-List">
-                                                        <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=information/tt_blog/blogs">
-                                                            <span data-hover="Blogs">Blogs</span>
-                                                        </a>
-                                                    </li>
-                                                </ul>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </aside>
-
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
+            <?php include 'header.php' ?>
+            
         </header>
         <div class="header-content-title">
 
@@ -752,43 +391,30 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             </a>
                                                             <div class="sale-icon">Sale</div>
                                                             <span class="percent">-10%</span>
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
+                                                            <div class="rating"> <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
                                                             </div>
 
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -825,28 +451,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('28')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -882,43 +500,30 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                                 <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05-354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" />
                                                                 <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05--354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" />
                                                             </a>
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
+                                                            <div class="rating"> <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
                                                             </div>
 
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('41')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('41');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('41');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('41');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('41');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -954,27 +559,19 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 
                                                             <div class="button-group">
                                                                 <button class="btn-cart disabled" type="button" title="Out Of Stock" onclick="">
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="out of stock">Out Of Stock
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('46');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    <i class="material-icons">shopping_cart</i><span class="out of stock">Out Of Stock
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('46');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('46');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('46');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=46')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=46')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -1014,28 +611,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('40')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('40');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('40');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('40');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('40');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -1072,28 +661,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('45')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('45');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('45');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('45');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('45');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -1133,28 +714,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('43')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('43');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('43');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('43');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('43');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -1191,28 +764,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -1251,28 +816,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('48')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('48');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('48');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('48');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('48');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -1309,28 +866,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('29')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('29');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('29');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('29');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('29');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=29')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=29')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -1363,634 +912,72 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
 
                                     <div id="tab-latest-0" class="tab-pane fade">
                                         <div id="owl2" class="products-carousel">
+                                            <?php
+                                            for ($i = 0; $i < $numberPage; $i++) {
+                                                $latestProductList = $productModel->getLatestProductsByPage($page, $perpage);
+                                            ?>
+                                                <div class='single-column'>
+                                                    <?php
+                                                    foreach ($latestProductList as $item) {
+                                                        $productPrice = number_format($item['product_price'],2);
+                                                    ?>
+                                                        <div class="product-layouts">
+                                                            <div class="product-thumb transition">
+                                                                <div class="image">
+                                                                    <div class="ttcdimg"></div>
+                                                                    <?php
+                                                                    $productPath = strtolower(str_replace(' ', '-', $item['product_name'])) . '-' . $item['product_id'];
+                                                                    ?>
+                                                                    <a href="product.php?/<?php echo $productPath; ?>">
+                                                                        <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
+                                                                        <!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/20--354x460.jpg" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" /> -->
+                                                                    </a>
+                                                                    <div class="button-group">
+                                                                        <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
 
-                                            <div class='single-column'>
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=49">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/20-354x460.jpg" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/20--354x460.jpg" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
-                                                            </a>
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart disabled" type="button" title="Out Of Stock" onclick="">
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="out of stock">Out Of Stock
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('49');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('49');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=49')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=49">suscipit
-                                                                        laboriosam nisi</a></h4>
-
-                                                                <div class="price">
-                                                                    $241.99
-
-
-                                                                    <span class="price-tax">Without tax: $199.99</span>
+                                                                            <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
+                                                                                Cart
+                                                                            </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                        <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
+                                                                            <span title="Add to wishlist">Add to wishlist</span>
+                                                                            <span class="loading"><i class="material-icons">cached</i></span>
+                                                                        </button>
+                                                                        <!-- <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
+                                                                            <span title="Add to Compare">Add to Compare</span>
+                                                                            <span class="loading"><i class="material-icons">cached</i></span>
+                                                                        </button> -->
+                                                                        <!-- <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
+                                                                            <span title=""></span>
+                                                                            <span class="loading"><i class="material-icons">cached</i></span>
+                                                                        </button> -->
+                                                                    </div>
                                                                 </div>
+                                                                <div class="thumb-description">
 
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
+                                                                    <div class="caption">
 
+                                                                        <h4><a href="product.php?=<?php echo $productPath; ?>"><?php echo $item['product_name'] ?></a></h4>
 
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/18-354x460.jpg" title="voluptas sit aspernatur" alt="voluptas sit aspernatur" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/18--354x460.jpg" title="voluptas sit aspernatur" alt="voluptas sit aspernatur" />
-                                                            </a>
+                                                                        <div class="price">
+                                                                            $<?php echo $productPrice ?>
 
 
+                                                                            <!-- <span class="price-tax">Without tax: $199.99</span> -->
+                                                                        </div>
 
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('48')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('48');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('48');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48">voluptas
-                                                                        sit aspernatur</a></h4>
-
-                                                                <div class="price">
-                                                                    $122.00
-
-
-                                                                    <span class="price-tax">Without tax: $100.00</span>
+                                                                    </div>
                                                                 </div>
-
                                                             </div>
                                                         </div>
-                                                    </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                  
                                                 </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/03-354x460.jpg" title="aliquam quat voluptatem" alt="aliquam quat voluptatem" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/03--354x460.jpg" title="aliquam quat voluptatem" alt="aliquam quat voluptatem" />
-                                                            </a>
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47">aliquam
-                                                                        quat voluptatem</a></h4>
-
-                                                                <div class="price">
-                                                                    $122.00
-
-
-                                                                    <span class="price-tax">Without tax: $100.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=46">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/17-354x460.jpg" title="voluptas nulla pariatur" alt="voluptas nulla pariatur" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/17--354x460.jpg" title="voluptas nulla pariatur" alt="voluptas nulla pariatur" />
-                                                            </a>
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart disabled" type="button" title="Out Of Stock" onclick="">
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="out of stock">Out Of Stock
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('46');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('46');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=46')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=46">voluptas
-                                                                        nulla pariatur</a></h4>
-
-                                                                <div class="price">
-                                                                    $1,202.00
-
-
-                                                                    <span class="price-tax">Without tax:
-                                                                        $1,000.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-354x460.jpg" title="quis autem veleuminium" alt="quis autem veleuminium" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11--354x460.jpg" title="quis autem veleuminium" alt="quis autem veleuminium" />
-                                                            </a>
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('45')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('45');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('45');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45">quis
-                                                                        autem veleuminium</a></h4>
-
-                                                                <div class="price">
-                                                                    $2,000.00
-
-
-                                                                    <span class="price-tax">Without tax:
-                                                                        $2,000.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=44">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/10-354x460.jpg" title="quaerat outt voluptatem" alt="quaerat outt voluptatem" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/10--354x460.jpg" title="quaerat outt voluptatem" alt="quaerat outt voluptatem" />
-                                                            </a>
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('44')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('44');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('44');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=44')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=44">quaerat
-                                                                        outt voluptatem</a></h4>
-
-                                                                <div class="price">
-                                                                    $1,202.00
-
-
-                                                                    <span class="price-tax">Without tax:
-                                                                        $1,000.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/09-354x460.jpg" title="perspiciatis unde omnis" alt="perspiciatis unde omnis" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/09--354x460.jpg" title="perspiciatis unde omnis" alt="perspiciatis unde omnis" />
-                                                            </a>
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('43')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('43');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('43');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43">perspiciatis
-                                                                        unde omnis</a></h4>
-
-                                                                <div class="price">
-                                                                    $14.00
-
-
-                                                                    <span class="price-tax">Without tax: $10.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01-354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01--354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" />
-                                                            </a>
-
-                                                            <div class="sale-icon">Sale</div>
-                                                            <span class="percent">-10%</span>
-
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
-                                                            </div>
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42">aliquam
-                                                                        quaerat voluptatem</a></h4>
-
-                                                                <div class="price">
-                                                                    <span class="price-new">$110.00</span> <span class="price-old">$122.00</span>
-
-
-                                                                    <span class="price-tax">Without tax: $90.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05-354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05--354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" />
-                                                            </a>
-
-
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
-                                                            </div>
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('41')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('41');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('41');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41">magni
-                                                                        dolores eosquies</a></h4>
-
-                                                                <div class="price">
-                                                                    $122.00
-
-
-                                                                    <span class="price-tax">Without tax: $100.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40">
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/19-354x460.jpg" title="voluptate velit esse" alt="voluptate velit esse" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/19--354x460.jpg" title="voluptate velit esse" alt="voluptate velit esse" />
-                                                            </a>
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('40')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('40');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('40');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40">voluptate
-                                                                        velit esse</a></h4>
-
-                                                                <div class="price">
-                                                                    $123.20
-
-
-                                                                    <span class="price-tax">Without tax: $101.00</span>
-                                                                </div>
-
-                                                            </div>
-                                                        </div>
-                                                    </div>
-                                                </div>
-
-                                            </div>
-
-
-
-
+                                            <?php
+                                                $page++;
+                                            }
+                                            ?>
                                         </div>
                                     </div>
 
@@ -1999,679 +986,74 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                     <div id="tab-bestseller-0" class="tab-pane fade">
                                         <div id="owl3" class="products-carousel">
 
-                                            <div class='single-column'>
+                                            <?php
+                                            $page = 1;
+                                            for ($i = 0; $i < $numberPage; $i++) {
+                                                $bestSellerList = $productModel->getBestSellerProductsByPage($page, $perpage);
+                                            ?>
+                                                <div class='single-column'>
+                                                    <?php
+                                                    foreach ($bestSellerList as $item) {
+                                                $productPrice = number_format($item['product_price'],2);
+                                                    ?>
+                                                        <div class="product-layouts">
+                                                            <div class="product-thumb transition">
+                                                                <div class="image">
+                                                                    <div class="ttcdimg"></div>
+                                                                    <?php
+                                                                    $productPath = strtolower(str_replace(' ', '-', $item['product_name'])) . '-' . $item['product_id'];
+                                                                    ?>
+                                                                    <a href="product.php?/<?php echo $productPath; ?>">
+                                                                        <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
+                                                                        <!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/20--354x460.jpg" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" /> -->
+                                                                    </a>
+                                                                    <div class="button-group">
+                                                                        <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
+
+                                                                            <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
+                                                                                Cart
+                                                                            </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                        <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
+                                                                            <span title="Add to wishlist">Add to wishlist</span>
+                                                                            <span class="loading"><i class="material-icons">cached</i></span>
+                                                                        </button>
+                                                                        <!-- <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
+                                                                            <span title="Add to Compare">Add to Compare</span>
+                                                                            <span class="loading"><i class="material-icons">cached</i></span>
+                                                                        </button> -->
+                                                                        <!-- <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
+                                                                            <span title=""></span>
+                                                                            <span class="loading"><i class="material-icons">cached</i></span>
+                                                                        </button> -->
+                                                                    </div>
+                                                                </div>
+                                                                <div class="thumb-description">
+
+                                                                    <div class="caption">
+
+                                                                        <h4><a href="product.php?=<?php echo $productPath; ?>"><?php echo $item['product_name'] ?></a></h4>
+
+                                                                        <div class="price">
+                                                                            $<?php echo $productPrice ?>
 
 
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41">
+                                                                            <!-- <span class="price-tax">Without tax: $199.99</span> -->
+                                                                        </div>
 
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05-354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05--354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" />
-                                                            </a>
-
-
-
-
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
-                                                            </div>
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('41')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('41');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('41');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=41">magni
-                                                                        dolores eosquies</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $122.00
-                                                                    <span class="price-tax">Without tax: $100.00</span>
+                                                                    </div>
                                                                 </div>
                                                             </div>
                                                         </div>
-
-                                                    </div>
+                                                    <?php
+                                                    }
+                                                    ?>
+                                                  
                                                 </div>
-
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/19-354x460.jpg" title="voluptate velit esse" alt="voluptate velit esse" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/19--354x460.jpg" title="voluptate velit esse" alt="voluptate velit esse" />
-                                                            </a>
-
-
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('40')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('40');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('40');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=40">voluptate
-                                                                        velit esse</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $123.20
-                                                                    <span class="price-tax">Without tax: $101.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/09-354x460.jpg" title="perspiciatis unde omnis" alt="perspiciatis unde omnis" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/09--354x460.jpg" title="perspiciatis unde omnis" alt="perspiciatis unde omnis" />
-                                                            </a>
-
-
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('43')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('43');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('43');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=43">perspiciatis
-                                                                        unde omnis</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $14.00
-                                                                    <span class="price-tax">Without tax: $10.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/03-354x460.jpg" title="aliquam quat voluptatem" alt="aliquam quat voluptatem" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/03--354x460.jpg" title="aliquam quat voluptatem" alt="aliquam quat voluptatem" />
-                                                            </a>
-
-
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47">aliquam
-                                                                        quat voluptatem</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $122.00
-                                                                    <span class="price-tax">Without tax: $100.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/02-354x460.jpg" title="aliquam quaerat voluptem" alt="aliquam quaerat voluptem" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/02--354x460.jpg" title="aliquam quaerat voluptem" alt="aliquam quaerat voluptem" />
-                                                            </a>
-
-
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('30')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30">aliquam
-                                                                        quaerat voluptem</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $122.00
-                                                                    <span class="price-tax">Without tax: $100.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/04-354x460.jpg" title="aspetur autodit autfugit" alt="aspetur autodit autfugit" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/04--354x460.jpg" title="aspetur autodit autfugit" alt="aspetur autodit autfugit" />
-                                                            </a>
-
-
-                                                            <div class="sale-icon">Sale</div>
-                                                            <span class="percent">-80%</span>
-
-                                                            <div class="product-countdown">
-                                                                <div id="countdown3_28" class="item-countdown" data-date="2021-12-31"></div>
-                                                            </div>
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('28')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28">aspetur
-                                                                        autodit autfugit</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    <span class="price-new">$26.00</span> <span class="price-old">$122.00</span>
-                                                                    <span class="price-tax">Without tax: $20.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-354x460.jpg" title="quis autem veleuminium" alt="quis autem veleuminium" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11--354x460.jpg" title="quis autem veleuminium" alt="quis autem veleuminium" />
-                                                            </a>
-
-
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('45')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('45');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('45');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=45">quis
-                                                                        autem veleuminium</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $2,000.00
-                                                                    <span class="price-tax">Without tax:
-                                                                        $2,000.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/18-354x460.jpg" title="voluptas sit aspernatur" alt="voluptas sit aspernatur" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/18--354x460.jpg" title="voluptas sit aspernatur" alt="voluptas sit aspernatur" />
-                                                            </a>
-
-
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('48')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('48');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('48');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=48">voluptas
-                                                                        sit aspernatur</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $122.00
-                                                                    <span class="price-tax">Without tax: $100.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
-                                            <div class='single-column'>
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=35">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/14-354x460.jpg" title="sint incidunt utlabore" alt="sint incidunt utlabore" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/14--354x460.jpg" title="sint incidunt utlabore" alt="sint incidunt utlabore" />
-                                                            </a>
-
-
-
-
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('35')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('35');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('35');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=35')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=35">sint
-                                                                        incidunt utlabore</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    $122.00
-                                                                    <span class="price-tax">Without tax: $100.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-
-
-                                                <div class="product-layouts">
-                                                    <div class="product-thumb transition">
-                                                        <div class="image">
-                                                            <div class="ttcdimg"></div>
-                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42">
-
-                                                                <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01-354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" />
-                                                                <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01--354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" />
-                                                            </a>
-
-
-                                                            <div class="sale-icon">Sale</div>
-                                                            <span class="percent">-10%</span>
-
-                                                            <div class="product-countdown">
-                                                                <div id="countdown3_42" class="item-countdown" data-date="2020-12-24"></div>
-                                                            </div>
-
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
-                                                            </div>
-
-                                                            <div class="button-group">
-                                                                <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
-
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
-                                                                        Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
-                                                                    <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
-                                                                    <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
-                                                                    <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
-                                                                </button>
-                                                            </div>
-                                                        </div>
-                                                        <div class="thumb-description">
-
-                                                            <div class="caption">
-
-                                                                <h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42">aliquam
-                                                                        quaerat voluptatem</a></h4>
-
-
-
-                                                                <div class="price">
-                                                                    <span class="price-new">$110.00</span> <span class="price-old">$122.00</span>
-                                                                    <span class="price-tax">Without tax: $90.00</span>
-                                                                </div>
-                                                            </div>
-                                                        </div>
-
-                                                    </div>
-                                                </div>
-
-                                            </div>
+                                            <?php
+                                                $page++;
+                                            }
+                                            ?>
+                                          
 
 
 
@@ -2679,10 +1061,8 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                         </div>
                                     </div>
                                     <div class="customNavigation">
-                                        <a class="btn prev customNavigation_prev"><i
-                                                class='material-icons'>arrow_back</i></a>
-                                        <a class="btn next customNavigation_next"><i
-                                                class='material-icons'>arrow_forward</i></a>
+                                        <a class="btn prev customNavigation_prev"><i class='material-icons'>arrow_back</i></a>
+                                        <a class="btn next customNavigation_next"><i class='material-icons'>arrow_forward</i></a>
                                     </div>
                                 </div>
                             </div>
@@ -2791,44 +1171,31 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="sale-icon">Sale</div>
                                                             <span class="percent">-10%</span>
 
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
+                                                            <div class="rating"> <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
                                                             </div>
 
 
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -2861,28 +1228,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('30')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -2916,28 +1275,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -2973,28 +1324,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('28')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3029,44 +1372,31 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="sale-icon">Sale</div>
                                                             <span class="percent">-10%</span>
 
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
+                                                            <div class="rating"> <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
                                                             </div>
 
 
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3099,28 +1429,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('30')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3154,28 +1476,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3211,28 +1525,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('28')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3267,44 +1573,31 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="sale-icon">Sale</div>
                                                             <span class="percent">-10%</span>
 
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
+                                                            <div class="rating"> <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
                                                             </div>
 
 
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3337,28 +1630,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('30')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3392,28 +1677,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3449,28 +1726,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('28')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3505,44 +1774,31 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="sale-icon">Sale</div>
                                                             <span class="percent">-10%</span>
 
-                                                            <div class="rating"> <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_on">star</i></span>
-                                                                <span class="fa-stack"><i
-                                                                        class="material-icons star_off">star_border</i></span>
+                                                            <div class="rating"> <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_on">star</i></span>
+                                                                <span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
                                                             </div>
 
 
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('42');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=42')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3575,28 +1831,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('30')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('30');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('30');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=30')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3630,28 +1878,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3687,28 +1927,20 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                             <div class="button-group">
                                                                 <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('28')">
 
-                                                                    <i class="material-icons">shopping_cart</i><span
-                                                                        class="hidden-xs hidden-sm hidden-md">Add to
+                                                                    <i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to
                                                                         Cart
-                                                                    </span><span class="loading"><i
-                                                                            class="material-icons">cached</i></span></button>
-                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i
-                                                                        class="material-icons icon-wishlist">favorite_border</i>
+                                                                    </span><span class="loading"><i class="material-icons">cached</i></span></button>
+                                                                <button class="btn-wishlist" title="Add to wishlist" onclick="wishlist.add('28');"><i class="material-icons icon-wishlist">favorite_border</i>
                                                                     <span title="Add to wishlist">Add to wishlist</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i
-                                                                        class="material-icons icon-exchange">equalizer</i>
+                                                                <button class="btn-compare" title="Add to Compare" onclick="compare.add('28');"><i class="material-icons icon-exchange">equalizer</i>
                                                                     <span title="Add to Compare">Add to Compare</span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
-                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i
-                                                                        class="material-icons quick_view_icon">visibility</i>
+                                                                <button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;product_id=28')"><i class="material-icons quick_view_icon">visibility</i>
                                                                     <span title=""></span>
-                                                                    <span class="loading"><i
-                                                                            class="material-icons">cached</i></span>
+                                                                    <span class="loading"><i class="material-icons">cached</i></span>
                                                                 </button>
                                                             </div>
                                                         </div>
@@ -3729,10 +1961,8 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                             </div>
                                         </div>
                                         <div class="customNavigation">
-                                            <a class="btn prev customNavigation_prev"><i
-                                                    class='material-icons'>arrow_back</i></a>
-                                            <a class="btn next customNavigation_next"><i
-                                                    class='material-icons'>arrow_forward</i></a>
+                                            <a class="btn prev customNavigation_prev"><i class='material-icons'>arrow_back</i></a>
+                                            <a class="btn next customNavigation_next"><i class='material-icons'>arrow_forward</i></a>
                                         </div>
 
                                     </div>
@@ -3853,9 +2083,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <div class="blog-hover"></div>
                                                 </a>
                                                 <span class="bloglinks">
-                                                    <a class="icon zoom" data-lightbox="example-set"
-                                                        href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/5-home-default-870x564.jpg"
-                                                        title="Click to view Full Image">
+                                                    <a class="icon zoom" data-lightbox="example-set" href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/5-home-default-870x564.jpg" title="Click to view Full Image">
                                                         <i class="material-icons icon-search">search</i>
                                                     </a>
                                                 </span>
@@ -3868,7 +2096,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <span class="blog-date">
                                                         <i class="fa fa-calendar"></i>
                                                         <span class="date">27</span>
-                                                    <span class="month">Oct-2020</span>
+                                                        <span class="month">Oct-2020</span>
                                                     </span>
                                                     <p class="blog-description"> Lorem Ipsum is simply dummy text of the printing and typesetting industry. ...
                                                     </p>
@@ -3889,9 +2117,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <div class="blog-hover"></div>
                                                 </a>
                                                 <span class="bloglinks">
-                                                    <a class="icon zoom" data-lightbox="example-set"
-                                                        href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/4-home-default-870x564.jpg"
-                                                        title="Click to view Full Image">
+                                                    <a class="icon zoom" data-lightbox="example-set" href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/4-home-default-870x564.jpg" title="Click to view Full Image">
                                                         <i class="material-icons icon-search">search</i>
                                                     </a>
                                                 </span>
@@ -3904,7 +2130,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <span class="blog-date">
                                                         <i class="fa fa-calendar"></i>
                                                         <span class="date">27</span>
-                                                    <span class="month">Oct-2020</span>
+                                                        <span class="month">Oct-2020</span>
                                                     </span>
                                                     <p class="blog-description"> Duis faucibus enim vitae nunc, Nullam mattis bvitae nunc facilisis matt.... ...
                                                     </p>
@@ -3925,9 +2151,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <div class="blog-hover"></div>
                                                 </a>
                                                 <span class="bloglinks">
-                                                    <a class="icon zoom" data-lightbox="example-set"
-                                                        href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/3-home-default-870x564.jpg"
-                                                        title="Click to view Full Image">
+                                                    <a class="icon zoom" data-lightbox="example-set" href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/3-home-default-870x564.jpg" title="Click to view Full Image">
                                                         <i class="material-icons icon-search">search</i>
                                                     </a>
                                                 </span>
@@ -3940,7 +2164,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <span class="blog-date">
                                                         <i class="fa fa-calendar"></i>
                                                         <span class="date">27</span>
-                                                    <span class="month">Oct-2020</span>
+                                                        <span class="month">Oct-2020</span>
                                                     </span>
                                                     <p class="blog-description"> Duis faucibus enim vitae nunc, Nullam mattis bvitae nunc facilisis mat...</p>
                                                     <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=information/tt_blog&amp;tt_blog_id=3" class="read-more">read more</a>
@@ -3960,9 +2184,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <div class="blog-hover"></div>
                                                 </a>
                                                 <span class="bloglinks">
-                                                    <a class="icon zoom" data-lightbox="example-set"
-                                                        href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/2-home-default-870x564.jpg"
-                                                        title="Click to view Full Image">
+                                                    <a class="icon zoom" data-lightbox="example-set" href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/2-home-default-870x564.jpg" title="Click to view Full Image">
                                                         <i class="material-icons icon-search">search</i>
                                                     </a>
                                                 </span>
@@ -3975,7 +2197,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <span class="blog-date">
                                                         <i class="fa fa-calendar"></i>
                                                         <span class="date">27</span>
-                                                    <span class="month">Oct-2020</span>
+                                                        <span class="month">Oct-2020</span>
                                                     </span>
                                                     <p class="blog-description"> Duis faucibus enim vitae nunc, Nullam mattis bvitae nunc facilisis matt.... ...
                                                     </p>
@@ -3996,9 +2218,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <div class="blog-hover"></div>
                                                 </a>
                                                 <span class="bloglinks">
-                                                    <a class="icon zoom" data-lightbox="example-set"
-                                                        href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/1-home-default-870x564.jpg"
-                                                        title="Click to view Full Image">
+                                                    <a class="icon zoom" data-lightbox="example-set" href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/banners/1-home-default-870x564.jpg" title="Click to view Full Image">
                                                         <i class="material-icons icon-search">search</i>
                                                     </a>
                                                 </span>
@@ -4011,7 +2231,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                     <span class="blog-date">
                                                         <i class="fa fa-calendar"></i>
                                                         <span class="date">27</span>
-                                                    <span class="month">Oct-2020</span>
+                                                        <span class="month">Oct-2020</span>
                                                     </span>
                                                     <p class="blog-description"> Duis faucibus enim vitae nunc, Nullam mattis bvitae nunc facilisis matt.... ...
                                                     </p>
@@ -4151,8 +2371,7 @@ if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['passw
                                                 <form name="subscribe" id="subscribe">
                                                     <input type="text" placeholder="Your email address" value="" name="subscribe_email" id="subscribe_email">
                                                     <input type="hidden" value="" name="subscribe_name" id="subscribe_name" />
-                                                    <a class="button btn btn-primary" onclick="email_subscribe()"><span>subscribe</span><i
-                                                            class='material-icons'>near_me</i></a>
+                                                    <a class="button btn btn-primary" onclick="email_subscribe()"><span>subscribe</span><i class='material-icons'>near_me</i></a>
 
                                                 </form>
                                             </div>

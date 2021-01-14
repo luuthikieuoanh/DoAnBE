@@ -1,16 +1,3 @@
-<?php
-require_once './config/database.php';
-spl_autoload_register(function ($class_name) {
-    require './app/models/' . $class_name . '.php';
-});
-
-$categoryModel = new CategoryModel();
-$categoryList = $categoryModel->getCategories();
-
-//$category_List = $categoryModel->getCategoriesByCategory($categoryList[0]['category_id']);
-//var_dump($category_List[0]);
-
-?>
 <div class="header">
     <div class="full-header">
         <div class="container">
@@ -79,63 +66,297 @@ $categoryList = $categoryModel->getCategories();
                                 </div>
                                 <div class="menu-category">
                                     <ul class="dropmenu">
+                                        <li class="TT-Sub-List dropdown">
+                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20" class="TT-Category-List">azulejo</a>
 
-                                        <?php
-                                        foreach ($categoryList as $item) {
-                                            $category_List = $categoryModel->getCategoriesByCategory($item['category_id']);
-                                            //  var_dump($category_List);
-                                        ?>
-                                            <?php
-                                            if (count($category_List) > 0) {
-                                            ?>
-                                                <li class="TT-Sub-List dropdown">
-                                                    <a href="#" class="TT-Category-List"><?php echo $item['category_name']; ?></a>
-                                                    <div class="dropdown-menu">
-                                                        <div class="dropdown-inner">
-                                                            <ul class="list-unstyled childs_1 mega-dropdown-menu columns-4" style="width: 200px;">
 
-                                                                <li class="dropdown first" style="width: 25%;">
-                                                                    <a href="#" class="single-dropdown">
-                                                                        <?php
-                                                                        echo $category_List[0]['category_name'];
-                                                                        ?></a>
 
-                                                                    <div class="dropdown-menu">
-                                                                        <div class="dropdown-inner">
-                                                                            <ul class="list-unstyled childs_2">
-                                                                                <?php
-                                                                                for ($i = 1; $i < count($category_List); $i++) {
-                                                                                ?>
-                                                                                    <li><a href="#">
-                                                                                            <?php echo $category_List[$i]['category_name'];
-                                                                                            ?></a>
-                                                                                    </li>
-                                                                                <?php
-                                                                                }
-                                                                                ?>
-                                                                            </ul>
-                                                                        </div>
-                                                                    </div>
-                                                                </li>
 
-                                                            </ul>
-                                                        </div>
-                                                    </div>
-                                                </li>
-                                            <?php
-                                            } else {
-                                            ?>
-                                                <li class="TT-Sub-List">
-                                                    <a href="#"><?php echo $item['category_name']; ?></a>
-                                                </li>
-                                            <?php
-                                            }
-                                            ?>
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-inner">
+                                                    <ul class="list-unstyled childs_1 mega-dropdown-menu columns-4" style="width: 800px;">
 
-                                        <?php
-                                        }
-                                        ?>
+                                                        <li class="dropdown first" style="width: 25%;">
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_123" class="single-dropdown">Petuntse</a>
 
+                                                            <div class="dropdown-menu">
+                                                                <div class="dropdown-inner">
+                                                                    <ul class="list-unstyled childs_2">
+
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_126">
+                                                                                Bone china</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_125">
+                                                                                Cenosphere</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_124">
+                                                                                Fritware</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_132">
+                                                                                Lumicera</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_127">
+                                                                                Pitchers</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=123_128">
+                                                                                Vinogel</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                            </a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+
+                                                        <li class="dropdown first" style="width: 25%;">
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_118" class="single-dropdown">Vinogel</a>
+
+                                                            <div class="dropdown-menu">
+                                                                <div class="dropdown-inner">
+                                                                    <ul class="list-unstyled childs_2">
+
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_119">
+                                                                                fruits</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_122">
+                                                                                Geopolymer</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_121">
+                                                                                grog</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_120">
+                                                                                Lumicera</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_133">
+                                                                                Lumicera</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=118_129">
+                                                                                Vinogel</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                            </a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+
+                                                        <li class="dropdown first" style="width: 25%;">
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_26" class="single-dropdown">Nile silt</a>
+
+                                                            <div class="dropdown-menu">
+                                                                <div class="dropdown-inner">
+                                                                    <ul class="list-unstyled childs_2">
+
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_61">
+                                                                                fruits</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_85">
+                                                                                Geopolymer</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_60">
+                                                                                Lumicera</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_134">
+                                                                                Lumicera</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_59">
+                                                                                Petuntse</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=26_130">
+                                                                                Vinogel</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                            </a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+
+                                                        <li class="dropdown first" style="width: 25%;">
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20_92" class="single-dropdown">Jesmonite</a>
+
+                                                            <div class="dropdown-menu">
+                                                                <div class="dropdown-inner">
+                                                                    <ul class="list-unstyled childs_2">
+
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_135">
+                                                                                Lumicera</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_95">
+                                                                                Nile silt</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_96">
+                                                                                Petuntse</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_93">
+                                                                                Pitchers</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_94">
+                                                                                Pitchers</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=92_131">
+                                                                                Vinogel</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                            </a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                        <li class="TT-Sub-List dropdown">
+                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=25" class="TT-Category-List">Pottery</a>
+
+
+
+
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-inner">
+                                                    <ul class="list-unstyled childs_1 mega-dropdown-menu columns-2" style="width: 400px;">
+
+                                                        <li class="dropdown first" style="width: 50%;">
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=25_98" class="single-dropdown">vegtables</a>
+
+                                                            <div class="dropdown-menu">
+                                                                <div class="dropdown-inner">
+                                                                    <ul class="list-unstyled childs_2">
+
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_139">
+                                                                                Vinogel</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_102">
+                                                                                Cenosphere</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_101">
+                                                                                fruits</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_141">
+                                                                                fruits</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_140">
+                                                                                Nile silt</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=98_100">
+                                                                                Stoneware</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                            </a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+
+                                                        <li class="dropdown first" style="width: 50%;">
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=25_99" class="single-dropdown">Petuntse</a>
+
+                                                            <div class="dropdown-menu">
+                                                                <div class="dropdown-inner">
+                                                                    <ul class="list-unstyled childs_2">
+
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_104">
+                                                                                Bone china</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_137">
+                                                                                dry fruits</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_105">
+                                                                                Fire clay</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_136">
+                                                                                Lumicera</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_103">
+                                                                                Petuntse</a>
+                                                                        </li>
+                                                                        <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=99_138">
+                                                                                vegtables</a>
+                                                                        </li>
+                                                                        <li>
+                                                                            <a href="">
+                                                                            </a>
+                                                                        </li>
+
+                                                                    </ul>
+                                                                </div>
+                                                            </div>
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                        <li class="TT-Sub-List dropdown">
+                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=65" class="TT-Category-List">Cameo</a>
+
+
+
+
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-inner">
+                                                    <ul class="list-unstyled childs_1 single-dropdown-menu">
+                                                        <li class="dropdown" style="width: 100%;">
+
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=65_114">Lumicera</a>
+
+
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                        <li class="TT-Sub-List">
+                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66">Pewter</a>
+
+
+                                        </li>
+                                        <li class="TT-Sub-List dropdown">
+                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=67" class="TT-Category-List">clothes</a>
+
+
+
+
+                                            <div class="dropdown-menu">
+                                                <div class="dropdown-inner">
+                                                    <ul class="list-unstyled childs_1 single-dropdown-menu">
+                                                        <li class="dropdown" style="width: 100%;">
+                                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=67_116">jacket</a>
+                                                        </li>
+                                                    </ul>
+                                                </div>
+                                            </div>
+
+                                        </li>
+                                        <li class="TT-Sub-List">
+                                            <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=information/tt_blog/blogs">
+                                                <span data-hover="Blogs">Blogs</span>
+                                            </a>
+                                        </li>
                                     </ul>
                                 </div>
                             </div>
