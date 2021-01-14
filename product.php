@@ -130,7 +130,7 @@ $item = $productModel->getProductByID($id);
 								<div class="product-image">
 									<a class="thumbnail" title="quis autem veleuminium">
 									
-										<img src="./images/cache/catalog/demo/product/<?php echo $item['product_picture']?>" alt="quis autem veleuminium" />
+										<img src="./image/cache/catalog/demo/product/<?php echo $item['product_picture']?>" alt="quis autem veleuminium" />
 									</a>
 
 								</div>

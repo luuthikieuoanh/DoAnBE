@@ -929,7 +929,7 @@ $numberPage = ceil($totalRow / $perpage);
                                                                     $productPath = strtolower(str_replace(' ', '-', $item['product_name'])) . '-' . $item['product_id'];
                                                                     ?>
                                                                     <a href="product.php?/<?php echo $productPath; ?>">
-                                                                        <img class="image_thumb" src="./images/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
+                                                                        <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
                                                                         <!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/20--354x460.jpg" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" /> -->
                                                                     </a>
                                                                     <div class="button-group">
@@ -1004,7 +1004,7 @@ $numberPage = ceil($totalRow / $perpage);
                                                                     $productPath = strtolower(str_replace(' ', '-', $item['product_name'])) . '-' . $item['product_id'];
                                                                     ?>
                                                                     <a href="product.php?/<?php echo $productPath; ?>">
-                                                                        <img class="image_thumb" src="./images/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
+                                                                        <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
                                                                         <!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/20--354x460.jpg" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" /> -->
                                                                     </a>
                                                                     <div class="button-group">
