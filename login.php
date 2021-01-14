@@ -8,54 +8,37 @@ spl_autoload_register(function ($class_name) {
 
 $user = new UserModel();
 $message = '';
-$email = '';
-$password = '';
 
-if (isset($_COOKIE['email']) && isset($_COOKIE['password'])) {
-	$email = $_COOKIE['email'];
-	$password = $_COOKIE['password'];
-}
+if (!empty($_POST['email']) && !empty($_POST['password'])) {
+	$getUser = $user->getUser($_POST['email']);
+	// var_dump($getUser);
+	// loại bỏ phần tử đầu tiên của mảng - trả về phần tử đầu tiên đã bị loại bỏ
+	$getUser = array_shift($getUser);
+	
+	// 
+	$id = $getUser['user_id'];
+	$emailDB =  $getUser['user_email'];
+	$passwordDB =  $getUser['user_password'];
 
 
-if (isset($_POST['submit'])) {
-	if (!empty($_POST['email']) && !empty($_POST['password'])) {
-		$getUser = $user->getUserByEmail($_POST['email']);
-		// var_dump($getUser);
-		// loại bỏ phần tử đầu tiên của mảng - trả về phần tử đầu tiên đã bị loại bỏ
-		$getUser = array_shift($getUser);
-		// 
-		$id = $getUser['user_id'];
-		$emailDB =  $getUser['user_email'];
-		$passwordDB =  $getUser['user_password'];
-
-		//kiểm tra chuỗi có giống nhau không
-		$pw = (password_verify($_POST['password'], $passwordDB)) ? true : false;
-		$a_check = ((isset($_POST['remember']) != 0) ? 1 : 0);
-		// session
-		if (($emailDB == $_POST['email']) && ($pw == true)) {
-			$_SESSION['id'] = $id;
-			$_SESSION['email'] = $emailDB;
-			$_SESSION['password'] = $passwordDB;
-
-			if ($a_check == 1) {
-				if (!isset($_COOKIE['email']) && !isset($_COOKIE['password'])) {
-					setcookie('email', $emailDB, time() + $cookie_time);
-					setcookie('password', $_POST['password'], time() + $cookie_time);
-				}
-			}
-			header('Location:account.php?id=' . $_SESSION['id']);
-		} else {
-			$message = 'Logged in failed !!';
-			echo "<script type='text/javascript'>alert('$message');</script>";
-			header('Localtion:login.php');
-		}
+	//kiểm tra chuỗi có giống nhau không
+	$pw = (password_verify($_POST['password'], $passwordDB)) ? 'true' : 'false';
+	// session
+	if (($emailDB == $_POST['email']) && ($pw == true)) {
+		$_SESSION['id'] = $id;
+		$_SESSION['email'] = $emailDB;
+		$_SESSION['password'] = $passwordDB;
+		header('Location:account.php?id='.$_SESSION['id']);
+	} else {
+		$message = 'Logged in failed !!';
+		echo "<script type='text/javascript'>alert('$message');</script>";
+		header('Localtion:login.php');
 	}
 }
 ?>
 
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -168,14 +151,14 @@ if (isset($_POST['submit'])) {
 							<div class="well">
 								<h2>Returning Customer</h2>
 								<p><strong>I am a returning customer</strong></p>
-								<form action="login.php" method="post">
+								<form action="#" method="post" enctype="multipart/form-data">
 									<div class="form-group">
 										<label class="control-label" for="input-email">Your email address</label>
-										<input type="text" name="email" value="<?php echo $email?>" placeholder="Your email address" id="input-email" class="form-control" />
+										<input type="text" name="email" value="" placeholder="Your email address" id="input-email" class="form-control" />
 									</div>
 									<div class="form-group">
 										<label class="control-label" for="input-password">Password</label>
-										<input type="password" name="password" value="<?php echo $password?>" placeholder="Password" id="input-password" class="form-control" />
+										<input type="password" name="password" value="" placeholder="Password" id="input-password" class="form-control" />
 										<!-- <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/forgotten">Forgotten Password</a></div> -->
 										<input type="submit" value="Login" class="btn btn-primary" />
 								</form>
@@ -270,7 +253,7 @@ if (isset($_POST['submit'])) {
 
 								}
 							</script>
-							<!-- <script>
+							<script>
 								$(document).ready(function() {
 									$('#subscribe_email').keypress(function(e) {
 										if (e.which == 13) {
@@ -286,7 +269,7 @@ if (isset($_POST['submit'])) {
 									});
 
 								});
-							</script> -->
+							</script>
 						</div>
 
 					</aside>

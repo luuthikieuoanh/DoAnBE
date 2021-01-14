@@ -1,2 +1,2 @@
 <?php
-define('BASE_URL', 'be1_mysql');
+define('BASE_URL', 'ourstore_data');
