@@ -1,3 +1,29 @@
+<?php
+session_start();
+require_once './config/database.php';
+require_once './config/config.php';
+spl_autoload_register(function ($class_name) {
+	require './app/models/' . $class_name . '.php';
+});
+$userModel = new UserModel();
+if (isset($_SESSION['id'])) {
+	$item = $userModel->getUserByID($_SESSION['id']);
+
+	$getUser = array_shift($item);
+	$firstname = $getUser['user_firstname'];
+	$lastname = $getUser['user_lastname'];
+	$phone = $getUser['user_telephone'];
+}
+
+if (isset($_POST['firstname'])) {
+	$update=$userModel->editUser($_SESSION['id'], $_POST['firstname'], $_POST['lastname'], $_POST['telephone']);
+	if ($update) {
+	header('location:account.php?message=1');
+	}
+}
+
+?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -59,7 +85,7 @@
 <body class="account-edit">
 	<div id="page">
 		<header>
-		<?php include 'header.php'?>
+			<?php include 'header.php' ?>
 		</header>
 		<div class="header-content-title">
 
@@ -103,36 +129,36 @@
 			<div class="row">
 				<div id="content" class="col-sm-12">
 					<h1>My Account Information</h1>
-					<form action="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/edit" method="post" enctype="multipart/form-data" class="form-horizontal">
+					<form action="editInformation.php" method="post" enctype="multipart/form-data" class="form-horizontal">
 						<fieldset>
 							<legend>Your Personal Details</legend>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="input-firstname">First Name </label>
 								<div class="col-sm-10">
-									<input type="text" name="firstname" value="Bao" placeholder="First Name" id="input-firstname" class="form-control" />
+									<input type="text" name="firstname" value="<?php echo $firstname ?>" placeholder="First Name" id="input-firstname" class="form-control" />
 								</div>
 							</div>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="input-lastname">Last Name</label>
 								<div class="col-sm-10">
-									<input type="text" name="lastname" value="Ngoc" placeholder="Last Name" id="input-lastname" class="form-control" />
+									<input type="text" name="lastname" value="<?php echo $lastname ?>" placeholder="Last Name" id="input-lastname" class="form-control" />
 								</div>
 							</div>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="input-email">Your email address</label>
 								<div class="col-sm-10">
-									<input type="email" name="email" value="phbaongoc2001@gmail.com" placeholder="Your email address" id="input-email" class="form-control" />
+									<input type="email" name="email" value="<?php echo $getUser['user_email'] ?>" placeholder="Your email address" id="input-email" readonly class="form-control" />
 								</div>
 							</div>
 							<div class="form-group required">
 								<label class="col-sm-2 control-label" for="input-telephone">Telephone</label>
 								<div class="col-sm-10">
-									<input type="tel" name="telephone" value="0933018608" placeholder="Telephone" id="input-telephone" class="form-control" />
+									<input type="tel" name="telephone" value="<?php echo $phone ?>" placeholder="Telephone" id="input-telephone" class="form-control" />
 								</div>
 							</div>
 						</fieldset>
 						<div class="buttons clearfix">
-							<div class="pull-left"><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account" class="btn btn-default">Back</a></div>
+							<div class="pull-left"><a href="account.php" class="btn btn-default">Back</a></div>
 							<div class="pull-right">
 								<input type="submit" value="Continue" class="btn btn-primary" />
 							</div>
