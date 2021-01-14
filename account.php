@@ -1,11 +1,9 @@
 <?php
 session_start();
 
-if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['password'])) {
-	header('Location:login.php');
-}
-
-?>
+if (!isset($_SESSION['id'])&&!isset($_SESSION['email'])&&!isset($_SESSION['password'])) {
+    header('Location:login.php');
+}?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -63,14 +61,11 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 <body class="account-account">
 	<div id="page">
 		<header>
-			<?php include 'header.php' ?>
+		<?php include 'header.php'?>
 		</header>
-
 		<div class="header-content-title">
-
 		</div>
-
-		<!-- <script>
+		<script>
 			$(document).ready(function() {
 				/* ---------------- start Templatetrip link more menu ----------------------*/
 				var max_link = 4;
@@ -97,7 +92,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 
 				/* ---------------- End Templatetrip link more menu ----------------------*/
 			});
-		</script> -->
+		</script>
 
 		<div id="account-account" class="container">
 			<ul class="breadcrumb">
@@ -107,15 +102,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 			<div class="row">
 				<div id="content" class="col-sm-12">
 					<h1 class="page-title">My account</h1>
-					<?php
-					if (isset($_GET['message'])) {
-						if ((int)$_GET['message'] === 1) {
-					?>
-							<div class="alert alert-success alert-dismissible"><i class="material-icons check-circle">check_circle</i> Success: Your account has been successfully updated.</div>
-					<?php
-						}
-					}
-					?>
+
 
 					<div class="a-link-list">
 						<div class="a-link-heading">
@@ -123,8 +110,8 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 						</div>
 						<div class="a-link-content">
 							<ul class="list-unstyled">
-								<li><a href="editInformation?id=<?php echo $_SESSION['id'] ?>">Edit your account information</a></li>
-								<li><a href="changePassword.php?id=<?php echo $_SESSION['id'] ?>">Change your password</a></li>
+								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/edit">Edit your account information</a></li>
+								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/password">Change your password</a></li>
 								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/address">Modify your address book entries</a></li>
 								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist">Modify your wish list</a></li>
 							</ul>
@@ -411,7 +398,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 			</div>
 		</footer>
 	</div>
-	<!-- 
+<!-- 
 	<script>
 		var tt_live_search = {
 			selector: '#search input[name=\'search\']',
