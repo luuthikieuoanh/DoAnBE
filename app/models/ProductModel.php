@@ -99,4 +99,26 @@ class ProductModel extends Db
         $sql->bind_param('ssisii', $productName, $productDescription, $productPrice, $productPhoto, $qty, $productID);
         return $sql->execute();
     }
+
+    public function updateLike($product_id,$user_id)
+    {
+        #check like
+        $sql1 = parent::$connection->prepare("SELECT `favourite_product`.`product_id`, `favourite_product`.`user_id` FROM `favourite_product` JOIN products ON favourite_product.product_id = products.product_id JOIN users ON users.user_id = favourite_product.user_id WHERE favourite_product.user_id = ? AND favourite_product.product_id = ?");
+        $sql1->bind_param('ii', $user_id, $product_id);
+        $checkLike = empty(parent::select($sql1));
+
+        if ($checkLike) {
+            $sql = parent::$connection->prepare("UPDATE `products` SET `product_favourite`=`product_favourite`+1 WHERE products.product_id =?");
+            #mark
+            $sql3 = parent::$connection->prepare("INSERT INTO `favourite_product` VALUES (?,?)");
+        } else {
+            $sql = parent::$connection->prepare("UPDATE `products` SET `product_favourite`=`product_favourite`-1 WHERE products.product_id =?");
+            #mark
+            $sql3 = parent::$connection->prepare("DELETE FROM `favourite_product` WHERE `product_id` = ? AND `user_id` = ?");
+        }
+        $sql->bind_param('i', $product_id);
+        $sql3->bind_param('ii', $product_id, $user_id);
+        $sql3->execute();
+        return $sql->execute();
+    }
 }
