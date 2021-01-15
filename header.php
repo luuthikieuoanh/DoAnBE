@@ -83,32 +83,27 @@ $categoryList = $categoryModel->getCategories();
                                         <?php
                                         foreach ($categoryList as $item) {
                                             $category_List = $categoryModel->getCategoriesByCategory($item['category_id']);
-                                            //  var_dump($category_List);
                                         ?>
                                             <?php
                                             if (count($category_List) > 0) {
                                             ?>
                                                 <li class="TT-Sub-List dropdown">
-                                                    <a href="#" class="TT-Category-List"><?php echo $item['category_name']; ?></a>
+                                                    <a href="category.php?id=<?php echo $item['category_id']?>" class="TT-Category-List"><?php echo $item['category_name']; ?></a>
                                                     <div class="dropdown-menu">
                                                         <div class="dropdown-inner">
                                                             <ul class="list-unstyled childs_1 mega-dropdown-menu columns-4" style="width: 200px;">
 
                                                                 <li class="dropdown first" style="width: 25%;">
-                                                                    <a href="#" class="single-dropdown">
-                                                                        <?php
-                                                                        echo $category_List[0]['category_name'];
-                                                                        ?></a>
+                                                                    
 
                                                                     <div class="dropdown-menu">
                                                                         <div class="dropdown-inner">
                                                                             <ul class="list-unstyled childs_2">
                                                                                 <?php
-                                                                                for ($i = 1; $i < count($category_List); $i++) {
+                                                                                for ($i = 0; $i < count($category_List); $i++) {
                                                                                 ?>
-                                                                                    <li><a href="#">
-                                                                                            <?php echo $category_List[$i]['category_name'];
-                                                                                            ?></a>
+                                                                                    <li><a href="category.php?id=<?php echo $category_List[$i]['category_id']?>-<?php echo $category_List[$i]['category_in_id']?>">
+                                                                                            <?php echo $category_List[$i]['category_name'];    ?></a>
                                                                                     </li>
                                                                                 <?php
                                                                                 }
@@ -126,7 +121,7 @@ $categoryList = $categoryModel->getCategories();
                                             } else {
                                             ?>
                                                 <li class="TT-Sub-List">
-                                                    <a href="#"><?php echo $item['category_name']; ?></a>
+                                                    <a href="category.php?id=<?php echo $item['category_id']?>"><?php echo $item['category_name']; ?></a>
                                                 </li>
                                             <?php
                                             }

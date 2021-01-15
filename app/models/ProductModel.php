@@ -23,17 +23,20 @@ class ProductModel extends Db
         $sql->bind_param('ii', $start, $perPage);
         return parent::select($sql);
     }
-    public function getProduct()
+    //
+    public function getProducts()
     {
         $sql = parent::$connection->prepare("SELECT * from products");
         return parent::select($sql);
     }
+    //Lấy sản phẩm theo id
     public function getProductByID($id)
     {
         $sql = parent::$connection->prepare("SELECT * from products where product_id=?");
         $sql->bind_param('i', $id);
         return parent::select($sql)[0];
     }
+    //Lấy sản phẩm bán chạy
     public function getBestSellerProductsByPage($page, $perPage)
     {
         $start = ($page - 1) * $perPage;
@@ -45,7 +48,34 @@ class ProductModel extends Db
         $sql->bind_param('ii', $start, $perPage);
         return parent::select($sql);
     }
-
+     // Lấy các sản phẩm theo danh mục
+     public function getProductsByCategory($categoryId)
+     {
+         $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ?");
+         $sql->bind_param('i', $categoryId);
+         return parent::select($sql);
+     }
+         // Tìm sản phẩm theo từ khóa
+    public function searchProducts($keyword)
+    {
+        $sql = parent::$connection->prepare("SELECT * FROM products WHERE product_name LIKE ?");
+        $search = "%{$keyword}%";
+        $sql->bind_param('s', $search);
+        return parent::select($sql);
+    }
+    //Sap xep
+    public function sortCategoryDECS($id,$x)
+    {
+        $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ? ORDER BY products.$x DESC");
+        $sql->bind_param('i',$id);
+        return parent::select($sql);
+    }
+    public function sortCategoryASC($id,$x)
+    {
+        $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ? ORDER BY products.$x ASC");
+        $sql->bind_param('i',$id);
+        return parent::select($sql);
+    }
      //Them san pham
      public function createProduct($productName, $productDescription, $productPrice, $productPhoto,$time,$qty)
      {

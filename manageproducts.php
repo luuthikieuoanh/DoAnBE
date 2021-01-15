@@ -11,7 +11,7 @@ if (!isset($_SESSION['email'])) {
 
 
 $productModel = new ProductModel();
-$productList = $productModel->getProduct();
+$productList = $productModel->getProducts();
 
 if (isset($_GET['delete'])) {
     $productModel->deleteProduct($_GET['delete']);
