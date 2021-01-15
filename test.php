@@ -5,5 +5,5 @@ spl_autoload_register(function ($class_name) {
 });
 $productmodel = new ProductModel();
 
-var_dump($productmodel->updateLike(1,1));
+var_dump($productmodel->updateLike(2,1));
 ?>

@@ -15,8 +15,13 @@ $productModel = new ProductModel();
 $itemP = $productModel->getProductByID($id);
 $img = explode(',', $itemP['product_picture']);
 
-
-
+$like = $productModel->countLike($itemP['product_id']);
+$styleRed = '';
+if (isset($_SESSION['id'])) {
+	if (!$productModel->checkUserFavourite($_SESSION['id'],$itemP['product_id'])) {
+		$styleRed = "style='color: red;'";
+	}
+}
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -80,6 +85,8 @@ $img = explode(',', $itemP['product_picture']);
 </head>
 
 <body class="product-product-45">
+	<input type="hidden" name="product_id" id="product_id" value="<?php echo $itemP['product_id']?>">
+	<input type="hidden" name="user_id" id="user_id" value="<?php echo isset($_SESSION['id'])?$_SESSION['id']:0?>">
 	<div id="page">
 		<header>
 			<?php include 'header.php' ?>
@@ -261,11 +268,9 @@ $img = explode(',', $itemP['product_picture']);
 
 							<!-- Product Wishlist Compare START -->
 							<div class="btn-group">
-								<button class="btn btn-default product-btn-wishlist" type="button" class="btn btn-default" title="Add to Wish List" onclick="wishlist.add('45');"><i class='material-icons favorite'>favorite_border</i>
-									Add to Wish List
-								</button>
-								<button class="btn btn-default product-btn-compare" type="button" class="btn btn-default" title="Add to compare" onclick="compare.add('45');"><i class="material-icons compare-arrows">compare_arrows</i>
-									Add to compare
+								<button class="btn btn-default product-btn-wishlist" type="button" class="btn btn-default" title="Add to Wish List" id="btn-favourite">
+									<i class='material-icons favorite' <?php echo $styleRed?>>favorite_border</i>
+									<span id="like"><?php echo $like?></span>
 								</button>
 							</div>
 							<!-- Product Wishlist Compare END -->
@@ -1084,7 +1089,7 @@ $img = explode(',', $itemP['product_picture']);
 		//
 	</script>
 
-
+	<script src="public/login_form/js/favouriteproduct.js"></script>
 	<!--
 OpenCart is open source software and you are free to remove the powered by OpenCart if you want, but its generally accepted practise to make a small donation.
 Please donate via PayPal to donate@opencart.com
