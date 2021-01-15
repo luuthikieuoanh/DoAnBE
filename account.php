@@ -125,8 +125,8 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 							<ul class="list-unstyled">
 								<li><a href="editInformation?id=<?php echo $_SESSION['id'] ?>">Edit your account information</a></li>
 								<li><a href="changePassword.php?id=<?php echo $_SESSION['id'] ?>">Change your password</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/address">Modify your address book entries</a></li>
-								<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist">Modify your wish list</a></li>
+								<li><a href="#">Modify your address book entries</a></li>
+								<li><a href="#">Modify your wish list</a></li>
 							</ul>
 						</div><!-- a-link-content END -->
 					</div>
