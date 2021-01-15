@@ -15,5 +15,4 @@ class CategoryModel extends Db
         $sql->bind_param('i', $categoryId);
         return parent::select($sql);
     }
-    
 }
