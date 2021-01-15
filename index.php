@@ -11,6 +11,7 @@ $page = 1;
 $perpage = 2;
 $totalRow = $productModel->getTotalRow();
 $numberPage = ceil($totalRow / $perpage);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -72,7 +73,7 @@ $numberPage = ceil($totalRow / $perpage);
     <div id="page">
         <header>
             <?php include 'header.php' ?>
-            
+
         </header>
         <div class="header-content-title">
 
@@ -919,18 +920,26 @@ $numberPage = ceil($totalRow / $perpage);
                                                 <div class='single-column'>
                                                     <?php
                                                     foreach ($latestProductList as $item) {
-                                                        $productPrice = number_format($item['product_price'],2);
+                                                        $productPrice = number_format($item['product_price'], 2);
                                                     ?>
                                                         <div class="product-layouts">
                                                             <div class="product-thumb transition">
                                                                 <div class="image">
                                                                     <div class="ttcdimg"></div>
                                                                     <?php
+                                                                    $imgs = explode(',', $item['product_picture']);
+
                                                                     $productPath = strtolower(str_replace(' ', '-', $item['product_name'])) . '-' . $item['product_id'];
                                                                     ?>
                                                                     <a href="product.php?/<?php echo $productPath; ?>">
-                                                                        <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
-                                                                        <!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/20--354x460.jpg" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" /> -->
+                                                                        <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $imgs[0] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
+                                                                        <?php
+                                                                        if (count($imgs) > 1) {
+                                                                        ?>
+                                                                            <img class="image_thumb_swap" src="./image/cache/catalog/demo/product/<?php echo $imgs[1] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
+                                                                        <?php }
+                                                                        ?>
+
                                                                     </a>
                                                                     <div class="button-group">
                                                                         <button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
@@ -972,7 +981,7 @@ $numberPage = ceil($totalRow / $perpage);
                                                     <?php
                                                     }
                                                     ?>
-                                                  
+
                                                 </div>
                                             <?php
                                                 $page++;
@@ -994,7 +1003,7 @@ $numberPage = ceil($totalRow / $perpage);
                                                 <div class='single-column'>
                                                     <?php
                                                     foreach ($bestSellerList as $item) {
-                                                $productPrice = number_format($item['product_price'],2);
+                                                        $productPrice = number_format($item['product_price'], 2);
                                                     ?>
                                                         <div class="product-layouts">
                                                             <div class="product-thumb transition">
@@ -1047,13 +1056,13 @@ $numberPage = ceil($totalRow / $perpage);
                                                     <?php
                                                     }
                                                     ?>
-                                                  
+
                                                 </div>
                                             <?php
                                                 $page++;
                                             }
                                             ?>
-                                          
+
 
 
 

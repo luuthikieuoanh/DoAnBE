@@ -76,4 +76,27 @@ class ProductModel extends Db
         $sql->bind_param('i',$id);
         return parent::select($sql);
     }
+     //Them san pham
+     public function createProduct($productName, $productDescription, $productPrice, $productPhoto,$time,$qty)
+     {
+         $sql = parent::$connection->prepare("INSERT INTO `products`(`product_name`, `product_price`, `product_description`, `product_picture`,`product_qty`,`create_at`) VALUES (?,?,?,?,?,?)");
+         $sql->bind_param('sissis', $productName, $productPrice, $productDescription, $productPhoto, $qty, $time);
+         return $sql->execute();
+     }
+
+      //Xoa san pham
+    public function deleteProduct($productID)
+    {
+        $sql = parent::$connection->prepare("DELETE FROM `products` WHERE product_id=?");
+        $sql->bind_param('i', $productID);
+        return $sql->execute();
+    }
+
+    //Sua san pham
+    public function updateProduct($productID, $productName, $productDescription, $productPrice, $productPhoto,$qty)
+    {
+        $sql = parent::$connection->prepare("UPDATE `products` SET `product_name`=?, `product_description`=?, `product_price`=?, `product_picture`=?, `product_qty`=? WHERE `product_id` = ?");
+        $sql->bind_param('ssisii', $productName, $productDescription, $productPrice, $productPhoto, $qty, $productID);
+        return $sql->execute();
+    }
 }

@@ -1,7 +1,7 @@
 <?php
 session_start();
 
-// ob_start();
+ob_start();
 require_once './config/database.php';
 require_once './config/config.php';
 spl_autoload_register(function ($class_name) {
@@ -113,8 +113,8 @@ if (isset($_SESSION['id'])&&isset($_SESSION['email'])&&isset($_SESSION['password
 			<?php
 			if (!empty($_POST['firstname']) && !empty($_POST['lastname']) && !empty($_POST['email']) && !empty($_POST['password']) && !empty($_POST['telephone']) && !empty($_POST['confirm'])) {
 				$userModel = new UserModel();
-				$getUser = $userModel->getUser($_POST['email']);
-				$user = new User($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['password'], $_POST['telephone']);
+				$getUser = $userModel->getUserByEmail($_POST['email']);
+				$user = new User($_POST['firstname'], $_POST['lastname'], $_POST['email'], $_POST['password'], $_POST['telephone'],"customer");
 
 				if ($_POST['password'] == $_POST['confirm'] && $getUser == null && $_POST['agree'] == 1) {
 					$createUser = $userModel->createtUser($user);
@@ -666,5 +666,5 @@ Please donate via PayPal to donate@opencart.com
 
 </html>
 <?php
-// ob_end_flush();
+ob_end_flush();
 ?>

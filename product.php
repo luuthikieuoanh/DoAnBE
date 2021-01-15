@@ -1,29 +1,35 @@
-<?php 
+<?php
 session_start();
 
 require_once './config/database.php';
 require_once './config/config.php';
 spl_autoload_register(function ($class_name) {
-    require './app/models/' . $class_name . '.php';
+	require './app/models/' . $class_name . '.php';
 });
 
 $pathURI = explode('-', $_SERVER['REQUEST_URI']);
 $id = $pathURI[count($pathURI) - 1];
+
+
 $productModel = new ProductModel();
-$item = $productModel->getProductByID($id);
+$itemP = $productModel->getProductByID($id);
+$img = explode(',', $itemP['product_picture']);
+
+
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Modern Art Store</title>
-    <script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
-    <script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>Modern Art Store</title>
+	<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js"></script>
+	<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js"></script>
 
-    <link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700&display=swap" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700" rel="stylesheet">
+	<link href="https://fonts.googleapis.com/css?family=Dosis:400,500,600,700&display=swap" rel="stylesheet">
 
 
 	<!--<link href="catalog/view/javascript/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />-->
@@ -76,14 +82,13 @@ $item = $productModel->getProductByID($id);
 <body class="product-product-45">
 	<div id="page">
 		<header>
-		<?php include 'header.php'?>
+			<?php include 'header.php' ?>
 		</header>
 		<div class="header-content-title">
 
 		</div>
 
-		<script>
-			
+		<!-- <script>
 			$(document).ready(function() {
 				/* ---------------- start Templatetrip link more menu ----------------------*/
 				var max_link = 4;
@@ -109,54 +114,52 @@ $item = $productModel->getProductByID($id);
 				);
 
 				/* ---------------- End Templatetrip link more menu ----------------------*/
-			});
-			
+			}); -->
 		</script>
 
 		<div id="product-product" class="container product-product">
 			<ul class="breadcrumb">
 				<li><a href="index.php"><i class="material-icons">home</i></a></li>
-				<li><a href="#"><?php echo $item['product_name']?> </a></li>
+				<li><a href="#"><?php echo $itemP['product_name'] ?> </a></li>
 			</ul>
 			<div class="row">
 				<div id="content" class="col-sm-12">
 
-					<h1 class="page-title"><?php echo $item['product_name']?> </h1>
+					<h1 class="page-title"><?php echo $itemP['product_name'] ?> </h1>
 					<!-- Product row START -->
 					<div class="row">
 						<div class="col-xs-12 col-sm-5 col-md-5 product-images">
 							<!-- Product Image thumbnails START -->
 							<div class="thumbnails">
 								<div class="product-image">
-									<a class="thumbnail" title="quis autem veleuminium">
-									
-										<img src="./image/cache/catalog/demo/product/<?php echo $item['product_picture']?>" alt="quis autem veleuminium" />
-									</a>
+									<a class="thumbnail">
+										<?php
 
+										?>
+										<img src="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $img[0] ?>" class="img-fluid" alt="...">
+										<!-- <img src="./image/cache/catalog/demo/product/<?php //echo $itemP['product_picture']
+																							?>" alt="quis autem veleuminium" /> -->
+									</a>
 								</div>
 
 								<div class="additional-images-container">
 									<div class="additional-images">
-										<div class="image-additional">
-											<img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" alt="quis autem veleuminium" />
-										</div>
-										<div class="image-additional">
-											<img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11--800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11--800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11--800x1040.jpg" alt="quis autem veleuminium" />
-										</div>
-										<div class="image-additional">
-											<img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/14-800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/14-800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/14-800x1040.jpg" alt="quis autem veleuminium" />
-										</div>
-										<div class="image-additional">
-											<img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/06-800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/06-800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/06-800x1040.jpg" alt="quis autem veleuminium" />
-										</div>
-										<div class="image-additional">
-											<img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/16-800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/16-800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/16-800x1040.jpg" alt="quis autem veleuminium" />
-										</div>
-										<div class="image-additional">
-											<img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/10-800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/10-800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/10-800x1040.jpg" alt="quis autem veleuminium" />
-										</div>
+										<?php
+										foreach ($img as $value) {
+										?>
+
+											<div class="image-additional">
+
+												<img src="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $value ?>" alt="...">
+
+												<!-- <img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" alt="quis autem veleuminium" /> -->
+											</div>
+
+
+										<?php } ?>
 									</div>
 								</div>
+
 
 								<!-- Product Image thumbnails END -->
 							</div>
@@ -198,7 +201,7 @@ $item = $productModel->getProductByID($id);
 							})
 						</script>
 						<div class="col-xs-12 col-sm-7 col-md-7 product-details">
-							<h1 class="product-name"><?php echo $item['product_name']?> </h1>
+							<h1 class="product-name"><?php echo $itemP['product_name'] ?> </h1>
 							<div class="rating">
 								<div class="product-rating">
 									<span class="fa fa-stack"><i class="material-icons star_off">star_border</i></span>
@@ -219,9 +222,9 @@ $item = $productModel->getProductByID($id);
 								</tr> -->
 								<tr>
 									<td>Product Code:</td>
-									<td class="product-info-value">Product <?php echo $item['product_id']?> </td>
+									<td class="product-info-value">Product <?php echo $itemP['product_id'] ?> </td>
 								</tr>
-							
+
 								<tr>
 									<td>Availability:</td>
 									<td class="product-info-value">In Stock</td>
@@ -234,7 +237,8 @@ $item = $productModel->getProductByID($id);
 
 							<ul class="list-unstyled product-price">
 								<li>
-									<h2>$<?php echo $item['product_price']?>.00 </h2>
+									<?php $productPrice = number_format($itemP['product_price'], 2); ?>
+									<h2>$<?php echo $itemP['product_price'] ?> </h2>
 								</li>
 								<!-- <li class="product-tax">Ex Tax: $2,000.00</li> -->
 
@@ -287,7 +291,7 @@ $item = $productModel->getProductByID($id);
 						<div class="tab-pane active" id="tab-description">
 							<div class="cpt_product_description ">
 								<div>
-								<?php echo $item['product_description']?> 
+									<?php echo $itemP['product_description'] ?>
 								</div>
 							</div>
 							<!-- cpt_container_end -->
@@ -490,7 +494,6 @@ $item = $productModel->getProductByID($id);
 		</div>
 		<script src="catalog/view/javascript/TemplateTrip/jquery.elevatezoom.min.js"></script>
 		<script>
-			
 			$('select[name=\'recurring_id\'], input[name="quantity"]').change(function() {
 				$.ajax({
 					url: 'index.php?route=product/product/getRecurringDescription',
@@ -532,10 +535,8 @@ $item = $productModel->getProductByID($id);
 			);
 
 			//
-			
 		</script>
 		<script>
-			
 			$('#button-cart').on('click', function() {
 				$.ajax({
 					url: 'index.php?route=checkout/cart/add',
@@ -628,10 +629,8 @@ $item = $productModel->getProductByID($id);
 				});
 			});
 			//
-			
 		</script>
 		<script>
-			
 			$('.date').datetimepicker({
 				language: 'en-gb',
 				pickTime: false
@@ -700,10 +699,8 @@ $item = $productModel->getProductByID($id);
 				}, 500);
 			});
 			//
-	
 		</script>
 		<script>
-			
 			$('#review').delegate('.pagination a', 'click', function(e) {
 				e.preventDefault();
 
@@ -760,7 +757,6 @@ $item = $productModel->getProductByID($id);
 
 			});
 			//
-			
 		</script>
 		<footer>
 
@@ -987,7 +983,6 @@ $item = $productModel->getProductByID($id);
 	</div>
 
 	<script>
-		
 		var tt_live_search = {
 			selector: '#search input[name=\'search\']',
 			text_no_matches: '',
@@ -1087,7 +1082,6 @@ $item = $productModel->getProductByID($id);
 			});
 		});
 		//
-		
 	</script>
 
 

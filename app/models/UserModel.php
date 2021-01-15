@@ -4,8 +4,8 @@ class UserModel extends Db
 {
     public function createtUser(User $user)
     {
-        $sql = parent::$connection->prepare("INSERT INTO `users`(`user_firstname`, `user_lastname`, `user_email`, `user_password`, `user_telephone`) VALUES (?,?,?,?,?)");
-        $sql->bind_param('sssss', $user->firstName, $user->lastName, $user->email, $user->password, $user->telephone);
+        $sql = parent::$connection->prepare("INSERT INTO `users`(`user_firstname`, `user_lastname`, `user_email`, `user_password`, `user_telephone`,`user_role`) VALUES (?,?,?,?,?,?)");
+        $sql->bind_param('ssssss', $user->firstName, $user->lastName, $user->email, $user->password, $user->telephone, $user->role);
         return $sql->execute();
     }
 
@@ -25,7 +25,7 @@ class UserModel extends Db
 
     public function getUserByEmail($user_email)
     {
-        $sql = parent::$connection->prepare("SELECT user_id,user_email,user_password FROM `users` WHERE user_email = ?;");
+        $sql = parent::$connection->prepare("SELECT user_id,user_email,user_password,user_role FROM `users` WHERE user_email = ?;");
         $sql->bind_param('s', $user_email);
         return parent::select($sql);
     }
