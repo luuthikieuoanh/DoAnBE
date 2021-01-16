@@ -2608,7 +2608,7 @@ $numberPage = ceil($totalRow / $perpage);
         </footer>
     </div>
 
-    <script>
+    <!-- <script>
         var tt_live_search = {
             selector: '#search input[name=\'search\']',
             text_no_matches: '',
@@ -2707,7 +2707,7 @@ $numberPage = ceil($totalRow / $perpage);
                 }
             });
         });
-    </script>
+    </script> -->
 
 
     <!--

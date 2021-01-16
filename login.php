@@ -57,6 +57,17 @@ if (isset($_POST['submit'])) {
 					setcookie('email', $emailDB, time() + $cookie_time);
 					setcookie('password', $_POST['password'], time() + $cookie_time);
 				}
+				else{
+					if ($pw == true && ($emailDB == $_POST['email'])) {
+						setcookie('email', $emailDB, time() + $cookie_time);
+					setcookie('password', $_POST['password'], time() + $cookie_time);
+					}
+					else{
+						$message = 'Logged in failed !!';
+				echo "<script type='text/javascript'>alert('$message');</script>";
+				header('Localtion:login.php');
+					}
+				}
 			}
 			
 		} 

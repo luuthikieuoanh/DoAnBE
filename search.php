@@ -2,8 +2,13 @@
 require_once './config/database.php';
 require_once './config/config.php';
 spl_autoload_register(function ($class_name) {
-	require './app/models/' . $class_name . '.php';
+    require './app/models/' . $class_name . '.php';
 });
+
+$q = $_GET['search'];
+$productModel = new ProductModel();
+$productList = $productModel->searchProducts($q);
+
 $page = 1;
 if (isset($_GET['page'])) {
 	$page = $_GET['page'];
@@ -11,7 +16,19 @@ if (isset($_GET['page'])) {
 $id = $_GET['id'];
 $productModel = new ProductModel();
 
-
+if (isset($_GET['sort'])) {
+	if ($_GET['sort'] == 'default') {
+		$productList = $productModel->getProductsByCategory($id);
+	} else if ($_GET['sort'] == 'a-z') {
+		$productList = $productModel->sortCategoryASC($id, 'product_name');
+	} else if ($_GET['sort'] == 'z-a') {
+		$productList = $productModel->sortCategoryDECS($id, 'product_name');
+	} else if ($_GET['sort'] == 'priceA') {
+		$productList = $productModel->sortCategoryASC($id, 'product_price');
+	} else {
+		$productList = $productModel->sortCategoryDECS($id, 'product_price');
+	}
+}
 
 $perPage = 3;
 if (isset($_GET['limit'])) {
@@ -20,25 +37,9 @@ if (isset($_GET['limit'])) {
 
 $productList2 = $productModel->getProductsByCategory($id);
 $totalRow = count($productList2);
-// $productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
+$productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
 
-if (isset($_GET['sort'])&&isset($_GET['limit'])) {
-	if ($_GET['sort'] == 'default') {
-		$productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
-	} else if ($_GET['sort'] == 'a-z') {
-		$productList = $productModel->sortCategoryASC($id, 'product_name',$page,$perPage);
-	} else if ($_GET['sort'] == 'z-a') {
-		$productList = $productModel->sortCategoryDECS($id, 'product_name',$page,$perPage);
-	} else if ($_GET['sort'] == 'priceA') {
-		$productList = $productModel->sortCategoryASC($id, 'product_price',$page,$perPage);
-	} else {
-		$productList = $productModel->sortCategoryDECS($id, 'product_price',$page,$perPage);
-	}
-}
-else{
-	$productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
-}
-$pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPage,$_GET['sort']);
+$pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPage);
 
 ?>
 <!DOCTYPE html>
@@ -362,19 +363,19 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 								<select id="input-limit" class="form-control" onchange="location = this.value;">
 
 
-									<option value="category.php?id=<?php echo $id ?>&limit=1&sort=<?php echo $_GET['sort']?>" >1</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=1">1</option>
 
 
-									<option value="category.php?id=<?php echo $id ?>&limit=2&sort=<?php echo $_GET['sort']?>" selected="selected">25</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=2" selected="selected">25</option>
 
 
-									<option value="category.php?id=<?php echo $id ?>&limit=3&sort=<?php echo $_GET['sort']?>">50</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=3">50</option>
 
 
-									<option value="category.php?id=<?php echo $id ?>&limit=75&sort=<?php echo $_GET['sort']?>">75</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=75">75</option>
 
 
-									<option value="category.php?id=<?php echo $id ?>&limit=100"&sort=<?php echo $_GET['sort']?>>100</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=100">100</option>
 
 
 								</select>
@@ -390,35 +391,35 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 
 									<?php if (isset($_GET['sort'])) {
 									?>
-										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>" <?php if ($_GET['sort'] == 'default' || !isset($_GET['sort'])) {
+										<option value="category.php?id=<?php echo $id ?>&sort=default" <?php if ($_GET['sort'] == 'default' || !isset($_GET['sort'])) {
 																											echo "selected = 'selected'";
 																										} else {
 																											echo "";
 																										} ?>>Default</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=a-z" <?php if ($_GET['sort'] == 'a-z') {
+										<option value="category.php?id=<?php echo $id ?>&sort=a-z" <?php if ($_GET['sort'] == 'a-z') {
 																										echo "selected = 'selected'";
 																									} else {
 																										echo "";
 																									} ?>>Name (A - Z)</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=z-a" <?php if ($_GET['sort'] == 'z-a') {
+										<option value="category.php?id=<?php echo $id ?>&sort=z-a" <?php if ($_GET['sort'] == 'z-a') {
 																										echo "selected = 'selected'";
 																									} else {
 																										echo "";
 																									} ?>>Name (Z - A)</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=priceA" <?php if ($_GET['sort'] == 'priceA') {
+										<option value="category.php?id=<?php echo $id ?>&sort=priceA" <?php if ($_GET['sort'] == 'priceA') {
 																											echo "selected = 'selected'";
 																										} else {
 																											echo "";
 																										} ?>>Price (Low &gt; High)</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=priceD" <?php if ($_GET['sort'] == 'priceD') {
+										<option value="category.php?id=<?php echo $id ?>&sort=priceD" <?php if ($_GET['sort'] == 'priceD') {
 																											echo "selected = 'selected'";
 																										} else {
 																											echo "";
