@@ -123,7 +123,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 						</div>
 						<div class="a-link-content">
 							<ul class="list-unstyled">
-								<li><a href="editInformation?id=<?php echo $_SESSION['id'] ?>">Edit your account information</a></li>
+								<li><a href="editInformation.php?id=<?php echo $_SESSION['id'] ?>">Edit your account information</a></li>
 								<li><a href="changePassword.php?id=<?php echo $_SESSION['id'] ?>">Change your password</a></li>
 								<li><a href="#">Modify your address book entries</a></li>
 								<li><a href="#">Modify your wish list</a></li>
