@@ -70,7 +70,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 
 		</div>
 
-		<!-- <script>
+		<script>
 			$(document).ready(function() {
 				/* ---------------- start Templatetrip link more menu ----------------------*/
 				var max_link = 4;
@@ -97,7 +97,7 @@ if (!isset($_SESSION['id']) && !isset($_SESSION['email']) && !isset($_SESSION['p
 
 				/* ---------------- End Templatetrip link more menu ----------------------*/
 			});
-		</script> -->
+		</script>
 
 		<div id="account-account" class="container">
 			<ul class="breadcrumb">
