@@ -2,44 +2,46 @@
 require_once './config/database.php';
 require_once './config/config.php';
 spl_autoload_register(function ($class_name) {
-    require './app/models/' . $class_name . '.php';
+	require './app/models/' . $class_name . '.php';
 });
-
-$q = $_GET['search'];
+session_start();
+// $q = $_GET['search'];
 $productModel = new ProductModel();
-$productList = $productModel->searchProducts($q);
+// $productList = $productModel->searchProducts($q);
+$id = $_GET['search'];;
 
 $page = 1;
 if (isset($_GET['page'])) {
 	$page = $_GET['page'];
 }
-$id = $_GET['id'];
-$productModel = new ProductModel();
 
-if (isset($_GET['sort'])) {
-	if ($_GET['sort'] == 'default') {
-		$productList = $productModel->getProductsByCategory($id);
-	} else if ($_GET['sort'] == 'a-z') {
-		$productList = $productModel->sortCategoryASC($id, 'product_name');
-	} else if ($_GET['sort'] == 'z-a') {
-		$productList = $productModel->sortCategoryDECS($id, 'product_name');
-	} else if ($_GET['sort'] == 'priceA') {
-		$productList = $productModel->sortCategoryASC($id, 'product_price');
-	} else {
-		$productList = $productModel->sortCategoryDECS($id, 'product_price');
-	}
-}
 
 $perPage = 3;
 if (isset($_GET['limit'])) {
 	$perPage = $_GET['limit'];
 }
 
-$productList2 = $productModel->getProductsByCategory($id);
+$productList2 = $productModel->searchProducts($id);
 $totalRow = count($productList2);
-$productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
+// $productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
 
-$pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPage);
+if (isset($_GET['sort']) && isset($_GET['limit'])) {
+	if ($_GET['sort'] == 'default') {
+		$productList = $productModel->searchProductsByPage($id, $page, $perPage);
+	} else if ($_GET['sort'] == 'a-z') {
+		$productList = $productModel->searchProductsASC($id, 'product_name', $page, $perPage);
+	} else if ($_GET['sort'] == 'z-a') {
+		$productList = $productModel->searchProductsDEC($id, 'product_name', $page, $perPage);
+	} else if ($_GET['sort'] == 'priceA') {
+		$productList = $productModel->searchProductsASC($id, 'product_price', $page, $perPage);
+	} else {
+		$productList = $productModel->searchProductsDEC($id, 'product_price', $page, $perPage);
+	}
+
+} else {
+	$productList = $productModel->searchProductsByPage($id, $page, $perPage);
+}
+$pageLinks = Pagination::createPageLinks('search',$totalRow, $perPage, $page, $id, $perPage, $_GET['sort']);
 
 ?>
 <!DOCTYPE html>
@@ -140,7 +142,7 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 		<div id="product-category" class="container product-category">
 			<ul class="breadcrumb">
 				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=common/home"><i class="material-icons">home</i></a></li>
-				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66">Pewter</a></li>
+				<li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66">SEARCH</a></li>
 			</ul>
 			<div class="row">
 				<aside id="column-left" class="col-sm-3 hidden-xs">
@@ -161,8 +163,8 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 									<!-- Display all category - child items list -->
 								</li>
 
-								<li class="category-li category-active">
-									<a href="" class="list-group-item active">Pewter</a>
+								<li class="category-li">
+									<a href="" class="list-group-item ">Pewter</a>
 								</li>
 								<li class="category-li">
 									<a href="" class="list-group-item">clothes</a>
@@ -362,20 +364,40 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 							<div class="col-md-8 text-right filter-selection">
 								<select id="input-limit" class="form-control" onchange="location = this.value;">
 
-
-									<option value="category.php?id=<?php echo $id ?>&limit=1">1</option>
-
-
-									<option value="category.php?id=<?php echo $id ?>&limit=2" selected="selected">25</option>
-
-
-									<option value="category.php?id=<?php echo $id ?>&limit=3">50</option>
+									
+									<option value="search.php?search=<?php echo $id ?>&limit=1&sort=<?php echo $_GET['sort'] ?>" <?php if ($_GET['limit'] == 1) {
+																																echo "selected = 'selected'";
+																															} else {
+																																echo "";
+																															} ?>>1</option>
 
 
-									<option value="category.php?id=<?php echo $id ?>&limit=75">75</option>
+									<option value="search.php?search=<?php echo $id ?>&limit=2&sort=<?php echo $_GET['sort'] ?>" <?php if ($_GET['limit'] == 2) {
+																																echo "selected = 'selected'";
+																															} else {
+																																echo "";
+																															} ?>>2</option>
 
 
-									<option value="category.php?id=<?php echo $id ?>&limit=100">100</option>
+									<option value="search.php?search=<?php echo $id ?>&limit=3&sort=<?php echo $_GET['sort'] ?>" <?php if ($_GET['limit'] == 3) {
+																																echo "selected = 'selected'";
+																															} else {
+																																echo "";
+																															} ?>>3</option>
+
+
+									<option value="search.php?search=<?php echo $id ?>&limit=75&sort=<?php echo $_GET['sort'] ?>"<?php if ($_GET['limit'] == 75) {
+																																echo "selected = 'selected'";
+																															} else {
+																																echo "";
+																															} ?>>75</option>
+
+
+									<option value="search.php?search=<?php echo $id ?>&limit=100&sort=<?php echo $_GET['sort'] ?>" <?php if ($_GET['limit'] == 100) {
+																																echo "selected = 'selected'";
+																															} else {
+																																echo "";
+																															} ?>>100</option>
 
 
 								</select>
@@ -389,58 +411,44 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 							<div class="col-md-9 text-right filter-selection">
 								<select id="input-sort" class="form-control" onchange="location = this.value;">
 
-									<?php if (isset($_GET['sort'])) {
-									?>
-										<option value="category.php?id=<?php echo $id ?>&sort=default" <?php if ($_GET['sort'] == 'default' || !isset($_GET['sort'])) {
-																											echo "selected = 'selected'";
-																										} else {
-																											echo "";
-																										} ?>>Default</option>
+								
+										<option value="search.php?search=<?php echo $id ?>&limit=<?php echo $_GET['limit'] ?>" <?php if ($_GET['sort'] == 'default') {
+																																echo "selected = 'selected'";
+																															} else {
+																																echo "";
+																															} ?>>
+																															
+																															Default</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&sort=a-z" <?php if ($_GET['sort'] == 'a-z') {
-																										echo "selected = 'selected'";
-																									} else {
-																										echo "";
-																									} ?>>Name (A - Z)</option>
+										<option value="search.php?search=<?php echo $id ?>&limit=<?php echo $_GET['limit'] ?>&sort=a-z" <?php if ($_GET['sort'] == 'a-z') {
+																																			echo "selected = 'selected'";
+																																		} else {
+																																			echo "";
+																																		} ?>>Name (A - Z)</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&sort=z-a" <?php if ($_GET['sort'] == 'z-a') {
-																										echo "selected = 'selected'";
-																									} else {
-																										echo "";
-																									} ?>>Name (Z - A)</option>
+										<option value="search.php?search=<?php echo $id ?>&limit=<?php echo $_GET['limit'] ?>&sort=z-a" <?php if ($_GET['sort'] == 'z-a') {
+																																			echo "selected = 'selected'";
+																																		} else {
+																																			echo "";
+																																		} ?>>Name (Z - A)</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&sort=priceA" <?php if ($_GET['sort'] == 'priceA') {
-																											echo "selected = 'selected'";
-																										} else {
-																											echo "";
-																										} ?>>Price (Low &gt; High)</option>
+										<option value="search.php?search=<?php echo $id ?>&limit=<?php echo $_GET['limit'] ?>&sort=priceA" <?php if ($_GET['sort'] == 'priceA') {
+																																			echo "selected = 'selected'";
+																																		} else {
+																																			echo "";
+																																		} ?>>Price (Low &gt; High)</option>
 
 
-										<option value="category.php?id=<?php echo $id ?>&sort=priceD" <?php if ($_GET['sort'] == 'priceD') {
-																											echo "selected = 'selected'";
-																										} else {
-																											echo "";
-																										} ?>>Price (High &gt; Low)</option>
+										<option value="search.php?search=<?php echo $id ?>&limit=<?php echo $_GET['limit'] ?>&sort=priceD" <?php if ($_GET['sort'] == 'priceD') {
+																																			echo "selected = 'selected'";
+																																		} else {
+																																			echo "";
+																																		} ?>>Price (High &gt; Low)</option>
 
-									<?php
-									} else { ?>
-										<option value="category.php?id=<?php echo $id ?>&sort=default">Default</option>
-
-
-										<option value="category.php?id=<?php echo $id ?>&sort=a-z">Name (A - Z)</option>
-
-
-										<option value="category.php?id=<?php echo $id ?>&sort=z-a">Name (Z - A)</option>
-
-
-										<option value="category.php?id=<?php echo $id ?>&sort=priceA">Price (Low &gt; High)</option>
-
-
-										<option value="category.php?id=<?php echo $id ?>&sort=priceD">Price (High &gt; Low)</option>
-									<?php } ?>
+								
 								</select>
 							</div>
 						</div>
@@ -451,32 +459,39 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 						<div class="row">
 							<?php
 							foreach ($productList as $item) {
+								$imgs = explode(',', $item['product_picture']);
 								$productPrice = number_format($item['product_price'], 2);
 								$productPath = strtolower(str_replace(' ', '-', $item['product_name'])) . '-' . $item['product_id'];
 							?>
 								<div class="product-layout product-list col-xs-12">
 									<div class="product-thumb row">
-										<div class="image"> <a href=""> <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" />
-												<!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01--354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" /> </a> -->
-
-
+										<div class="image">
+										 	<a href="product.php?/<?php echo $productPath; ?>">
+												<img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $imgs[0] ?>" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" />
+												<?php
+												if (count($imgs) > 1) {
+												?>
+												<img class="image_thumb_swap" src="./image/cache/catalog/demo/product/<?php echo $imgs[1] ?>" title="suscipit laboriosam nisi" alt="suscipit laboriosam nisi" />
+												<?php }
+												?>
+											</a>
+											<!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01--354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" /> </a> -->
 												<div class="button-group">
 													<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
-
 														<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
 														</span><span class="loading"><i class="material-icons">cached</i></span></button>
-													<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
+													<!-- <button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
 														<span title="Add to Wish List">Add to Wish List</span>
 														<span class="loading"><i class="material-icons">cached</i></span>
-													</button>
-
+													</button> -->
 												</div>
 										</div>
 										<div class="thumb-description">
 											<div class="caption">
 												<div class="product-description">
 													<h4><a href="product.php?=<?php echo $productPath; ?>"><?php echo $item['product_name']; ?></a></h4>
-													<p class="description"><?php $str= substr($item['product_description'],0,100);echo $str.'...'; 
+													<p class="description"><?php $str = substr($item['product_description'], 0, 100);
+																			echo $str . '...';
 																			?></p>
 												</div>
 												<div class="product-price-and-shipping">
@@ -512,7 +527,7 @@ $pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPag
 					<!-- Category products END -->
 					<!-- Category pagination START -->
 					<div class="category-pagination">
-						<div class="col-xs-6 text-left">Showing 1 to <?php echo $perPage?> of <?php echo $totalRow?> (<?php echo $page?> Pages)</div>
+						<div class="col-xs-6 text-left">Showing 1 to <?php echo $perPage ?> of <?php echo $totalRow ?> (<?php echo $page ?> Pages)</div>
 
 						<div class="col-xs-6 text-right">
 							<?php echo $pageLinks ?>

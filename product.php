@@ -95,7 +95,7 @@ if (isset($_SESSION['id'])) {
 
 		</div>
 
-		<!-- <script>
+		<script>
 			$(document).ready(function() {
 				/* ---------------- start Templatetrip link more menu ----------------------*/
 				var max_link = 4;
@@ -121,7 +121,7 @@ if (isset($_SESSION['id'])) {
 				);
 
 				/* ---------------- End Templatetrip link more menu ----------------------*/
-			}); -->
+			});
 		</script>
 
 		<div id="product-product" class="container product-product">
@@ -143,7 +143,7 @@ if (isset($_SESSION['id'])) {
 										<?php
 
 										?>
-										<img src="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $img[0] ?>" class="img-fluid" alt="...">
+										<img src="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $img[0] ?>" class="img-fluid" alt="..."  data-image="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $img[0] ?>"data-zoom-image="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $img[0] ?>">
 										<!-- <img src="./image/cache/catalog/demo/product/<?php //echo $itemP['product_picture']
 																							?>" alt="quis autem veleuminium" /> -->
 									</a>
@@ -157,7 +157,7 @@ if (isset($_SESSION['id'])) {
 
 											<div class="image-additional">
 
-												<img src="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $value ?>" alt="...">
+												<img src="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $value ?>" alt="..."  data-image="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $value ?>"data-zoom-image="/<?php echo BASE_URL; ?>/image/cache/catalog/demo/product/<?php echo $value ?>">
 
 												<!-- <img src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" title="quis autem veleuminium" data-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" data-zoom-image="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-800x1040.jpg" alt="quis autem veleuminium" /> -->
 											</div>
@@ -245,7 +245,7 @@ if (isset($_SESSION['id'])) {
 							<ul class="list-unstyled product-price">
 								<li>
 									<?php $productPrice = number_format($itemP['product_price'], 2); ?>
-									<h2>$<?php echo $itemP['product_price'] ?> </h2>
+									<h2>$<?php echo $productPrice ?> </h2>
 								</li>
 								<!-- <li class="product-tax">Ex Tax: $2,000.00</li> -->
 

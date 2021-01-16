@@ -12,6 +12,9 @@ $message = '';
 $cookie_time = (3600 * 24 * 30);
 $email = '';
 $password = '';
+if (isset($_SESSION['email'])) {
+	header('location:account.php');
+}
 
 if (isset($_COOKIE['email']) && isset($_COOKIE['password'])) {
 	$email = $_COOKIE['email'];
@@ -65,7 +68,7 @@ if (isset($_POST['submit'])) {
 					else{
 						$message = 'Logged in failed !!';
 				echo "<script type='text/javascript'>alert('$message');</script>";
-				header('Localtion:login.php');
+				header('Location:login.php');
 					}
 				}
 			}

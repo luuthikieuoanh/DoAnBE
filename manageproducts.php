@@ -48,8 +48,10 @@ if (isset($_GET['delete'])) {
 
 <body>
     <div class="container">
+    <a href="index.php" class="btn btn-primary">Home</a>
         <a href="createproduct.php" class="btn btn-primary">Create a new product</a>
         <a href="logout.php" class="btn btn-primary">Logout</a>
+        
         <table class="table">
             <tr class="thread">
                 <td>ID</td>

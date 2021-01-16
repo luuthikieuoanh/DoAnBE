@@ -16,4 +16,12 @@ class CategoryModel extends Db
         return parent::select($sql);
     }
     
+    public function getCategoriesByID($id)
+    {
+        //2. Viết câu SQL
+        $sql = parent::$connection->prepare("SELECT * FROM `categories` WHERE `category_id` = ?");
+        $sql->bind_param('i', $id);
+        return parent::select($sql)[0];
+    }
+
 }

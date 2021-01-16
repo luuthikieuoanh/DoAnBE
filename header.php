@@ -31,6 +31,8 @@ $categoryList = $categoryModel->getCategories();
                                 </span>
                                 <form class="ttsearchtoggle" method="get" action="search.php">
                                     <input type="text" name="search" value="" placeholder="Search" class="form-control input-lg" />
+                                    <input type="hidden" name="sort" value="default" placeholder="Search" class="form-control input-lg" />
+                                    <input type="hidden" name="limit" value="2" placeholder="Search" class="form-control input-lg" />
                                     <span class="input-group-btn">
                                         <button type="submit" class="btn btn-default btn-lg"><i class="material-icons icon-search">search</i></button>
                                     </span>
@@ -43,13 +45,17 @@ $categoryList = $categoryModel->getCategories();
                                     <li><a href="login.php"><i class="material-icons">lock</i> Login</a></li>
                                     <li><a href="register.php"><i class='material-icons reg-person'>person</i> Register</a></li>
                                     <!-- <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons favorite">favorite</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li> -->
-                                <?php } else { ?>
+                                <?php } else if(!$_SESSION['role']=='admin'){ ?>
                                     <li><a href="account.php?id=<?php echo $_SESSION['id'] ?>"><i class='material-icons ma-user'>perm_identity</i> My account</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/order"><i class='material-icons calendar-today'>calendar_today</i> Order History</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/transaction"><i class='material-icons credit-card'>credit_card</i> Transactions</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons icon-wishlist">favorite_border</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li>
                                     <li><a href="logout.php"><i class="material-icons">lock_open</i> Logout</a></li>
-                                <?php } ?>
+                                <?php } else{?>
+                                    <li><a href="manageproducts"><i class='material-icons ma-user'>perm_identity</i> Manage Products</a></li>
+                                    <li><a href="logout.php"><i class="material-icons">lock_open</i> Logout</a></li>
+                                <?php }?>
+
                             </ul>
                         </li>
                         <li class="ttcart">
