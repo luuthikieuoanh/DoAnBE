@@ -156,7 +156,7 @@ if (isset($_SESSION['id']) && isset($_POST['password'])) {
 							</div>
 						</fieldset>
 						<div class="buttons clearfix">
-							<div class="pull-left"><a href="acount.php" class="btn btn-default">Back</a></div>
+							<div class="pull-left"><a href="account.php?id=<?php echo $_SESSION['id']?>" class="btn btn-default">Back</a></div>
 							<div class="pull-right">
 								<input type="submit" value="Continue" class="btn btn-primary" />
 							</div>
