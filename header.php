@@ -29,12 +29,12 @@ $categoryList = $categoryModel->getCategories();
                                     <i class="material-icons icon-search">search</i>
                                     <i class="material-icons icon-close">clear</i>
                                 </span>
-                                <div class="ttsearchtoggle">
+                                <form class="ttsearchtoggle" method="get" action="search.php">
                                     <input type="text" name="search" value="" placeholder="Search" class="form-control input-lg" />
                                     <span class="input-group-btn">
-                                        <button type="button" class="btn btn-default btn-lg"><i class="material-icons icon-search">search</i></button>
+                                        <button type="submit" class="btn btn-default btn-lg"><i class="material-icons icon-search">search</i></button>
                                     </span>
-                                </div>
+                                </form>
                             </div>
                         </li>
                         <li class="account-nav dropdown header_user_info"><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account" title="Account" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons user">perm_identity</i><span class="ttuserheading">Account</span><i class="material-icons expand-more">expand_more</i></a>
@@ -42,7 +42,7 @@ $categoryList = $categoryModel->getCategories();
                                 <?php if (!isset($_SESSION['email'])) { ?>
                                     <li><a href="login.php"><i class="material-icons">lock</i> Login</a></li>
                                     <li><a href="register.php"><i class='material-icons reg-person'>person</i> Register</a></li>
-                                    <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons favorite">favorite</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li>
+                                    <!-- <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons favorite">favorite</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li> -->
                                 <?php } else { ?>
                                     <li><a href="account.php?id=<?php echo $_SESSION['id']?>"><i class='material-icons ma-user'>perm_identity</i> My account</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/order"><i class='material-icons calendar-today'>calendar_today</i> Order History</a></li>
@@ -88,7 +88,7 @@ $categoryList = $categoryModel->getCategories();
                                             if (count($category_List) > 0) {
                                             ?>
                                                 <li class="TT-Sub-List dropdown">
-                                                    <a href="category.php?id=<?php echo $item['category_id']?>" class="TT-Category-List"><?php echo $item['category_name']; ?></a>
+                                                    <a href="category.php?id=<?php echo $item['category_id']?>&limit=2&sort=default" class="TT-Category-List"><?php echo $item['category_name']; ?></a>
                                                     <div class="dropdown-menu">
                                                         <div class="dropdown-inner">
                                                             <ul class="list-unstyled childs_1 mega-dropdown-menu columns-4" style="width: 200px;">

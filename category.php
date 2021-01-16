@@ -2,29 +2,44 @@
 require_once './config/database.php';
 require_once './config/config.php';
 spl_autoload_register(function ($class_name) {
-    require './app/models/' . $class_name . '.php';
+	require './app/models/' . $class_name . '.php';
 });
-
+$page = 1;
+if (isset($_GET['page'])) {
+	$page = $_GET['page'];
+}
 $id = $_GET['id'];
 $productModel = new ProductModel();
-$productList = $productModel->getProductsByCategory($id);
-if (isset($_GET['sort'])) {
-	if ($_GET['sort']==0) {
-		$productList = $productModel->getProductsByCategory($id);
-	}
-	else if ($_GET['sort']==1) {
-		$productList= $productModel->sortCategoryASC($id,'product_name');
-	}
-	else if ($_GET['sort']==2) {
-		$productList= $productModel->sortCategoryDECS($id,'product_name');
-	}
-	else if ($_GET['sort']==3) {
-		$productList= $productModel->sortCategoryASC($id,'product_price');
-	}
-	else  {
-		$productList= $productModel->sortCategoryDECS($id,'product_price');
+
+
+
+$perPage = 3;
+if (isset($_GET['limit'])) {
+	$perPage = $_GET['limit'];
+}
+
+$productList2 = $productModel->getProductsByCategory($id);
+$totalRow = count($productList2);
+// $productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
+
+if (isset($_GET['sort'])&&isset($_GET['limit'])) {
+	if ($_GET['sort'] == 'default') {
+		$productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
+	} else if ($_GET['sort'] == 'a-z') {
+		$productList = $productModel->sortCategoryASC($id, 'product_name',$page,$perPage);
+	} else if ($_GET['sort'] == 'z-a') {
+		$productList = $productModel->sortCategoryDECS($id, 'product_name',$page,$perPage);
+	} else if ($_GET['sort'] == 'priceA') {
+		$productList = $productModel->sortCategoryASC($id, 'product_price',$page,$perPage);
+	} else {
+		$productList = $productModel->sortCategoryDECS($id, 'product_price',$page,$perPage);
 	}
 }
+else{
+	$productList = $productModel->getProductsByCategoryPage($id, $page, $perPage);
+}
+$pageLinks = Pagination::createPageLinks($totalRow, $perPage, $page, $id,$perPage,$_GET['sort']);
+
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -86,14 +101,13 @@ if (isset($_GET['sort'])) {
 <body class="product-category-66">
 	<div id="page">
 		<header>
-		<?php include 'header.php' ?>
+			<?php include 'header.php' ?>
 		</header>
 		<div class="header-content-title">
 
 		</div>
 
 		<script>
-			
 			$(document).ready(function() {
 				/* ---------------- start Templatetrip link more menu ----------------------*/
 				var max_link = 4;
@@ -120,7 +134,6 @@ if (isset($_GET['sort'])) {
 
 				/* ---------------- End Templatetrip link more menu ----------------------*/
 			});
-			
 		</script>
 
 		<div id="product-category" class="container product-category">
@@ -135,23 +148,23 @@ if (isset($_GET['sort'])) {
 							<div class="panel-heading">Categories</div>
 							<ul class="list-group">
 								<li class="category-li">
-									<a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=20" class="list-group-item">azulejo</a>
+									<a href="" class="list-group-item">azulejo</a>
 									<!-- Display all category - child items list -->
 								</li>
 								<li class="category-li">
-									<a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=25" class="list-group-item">Pottery</a>
+									<a href="" class="list-group-item">Pottery</a>
 									<!-- Display all category - child items list -->
 								</li>
 								<li class="category-li">
-									<a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=65" class="list-group-item">Cameo</a>
+									<a href="" class="list-group-item">Cameo</a>
 									<!-- Display all category - child items list -->
 								</li>
 
 								<li class="category-li category-active">
-									<a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66" class="list-group-item active">Pewter</a>
+									<a href="" class="list-group-item active">Pewter</a>
 								</li>
 								<li class="category-li">
-									<a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=67" class="list-group-item">clothes</a>
+									<a href="" class="list-group-item">clothes</a>
 									<!-- Display all category - child items list -->
 								</li>
 							</ul>
@@ -164,13 +177,11 @@ if (isset($_GET['sort'])) {
 							</div>
 						</div>
 						<script>
-							
 							$('#banner0').swiper({
 								effect: 'fade',
 								autoplay: 2500,
 								autoplayDisableOnInteraction: false
 							});
-							
 						</script>
 						<div class="featured-carousel products-list">
 							<div class="box-heading">
@@ -324,7 +335,7 @@ if (isset($_GET['sort'])) {
 
 				<div id="content" class="col-sm-9">
 					<!-- Category Description START -->
-					<h1 class="category-name">Pewter</h1>
+					<h1 class="category-name"></h1>
 					<div class="category-description">
 						<div class="row">
 						</div>
@@ -351,19 +362,19 @@ if (isset($_GET['sort'])) {
 								<select id="input-limit" class="form-control" onchange="location = this.value;">
 
 
-									<option value="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66&amp;limit=12" selected="selected">12</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=1&sort=<?php echo $_GET['sort']?>" >1</option>
 
 
-									<option value="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66&amp;limit=25">25</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=2&sort=<?php echo $_GET['sort']?>" selected="selected">25</option>
 
 
-									<option value="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66&amp;limit=50">50</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=3&sort=<?php echo $_GET['sort']?>">50</option>
 
 
-									<option value="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66&amp;limit=75">75</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=75&sort=<?php echo $_GET['sort']?>">75</option>
 
 
-									<option value="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/category&amp;path=66&amp;limit=100">100</option>
+									<option value="category.php?id=<?php echo $id ?>&limit=100"&sort=<?php echo $_GET['sort']?>>100</option>
 
 
 								</select>
@@ -377,20 +388,58 @@ if (isset($_GET['sort'])) {
 							<div class="col-md-9 text-right filter-selection">
 								<select id="input-sort" class="form-control" onchange="location = this.value;">
 
-
-									<option value="category.php?id=<?php echo $id?>&sort=0" selected="selected">Default</option>
-
-
-									<option value="category.php?id=<?php echo $id?>&sort=1">Name (A - Z)</option>
-
-
-									<option value="category.php?id=<?php echo $id?>&sort=2">Name (Z - A)</option>
-
-
-									<option value="category.php?id=<?php echo $id?>&sort=3">Price (Low &gt; High)</option>
+									<?php if (isset($_GET['sort'])) {
+									?>
+										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>" <?php if ($_GET['sort'] == 'default' || !isset($_GET['sort'])) {
+																											echo "selected = 'selected'";
+																										} else {
+																											echo "";
+																										} ?>>Default</option>
 
 
-									<option value="category.php?id=<?php echo $id?>&sort=4">Price (High &gt; Low)</option>
+										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=a-z" <?php if ($_GET['sort'] == 'a-z') {
+																										echo "selected = 'selected'";
+																									} else {
+																										echo "";
+																									} ?>>Name (A - Z)</option>
+
+
+										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=z-a" <?php if ($_GET['sort'] == 'z-a') {
+																										echo "selected = 'selected'";
+																									} else {
+																										echo "";
+																									} ?>>Name (Z - A)</option>
+
+
+										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=priceA" <?php if ($_GET['sort'] == 'priceA') {
+																											echo "selected = 'selected'";
+																										} else {
+																											echo "";
+																										} ?>>Price (Low &gt; High)</option>
+
+
+										<option value="category.php?id=<?php echo $id ?>&limit=<?php echo $_GET['limit']?>&sort=priceD" <?php if ($_GET['sort'] == 'priceD') {
+																											echo "selected = 'selected'";
+																										} else {
+																											echo "";
+																										} ?>>Price (High &gt; Low)</option>
+
+									<?php
+									} else { ?>
+										<option value="category.php?id=<?php echo $id ?>&sort=default">Default</option>
+
+
+										<option value="category.php?id=<?php echo $id ?>&sort=a-z">Name (A - Z)</option>
+
+
+										<option value="category.php?id=<?php echo $id ?>&sort=z-a">Name (Z - A)</option>
+
+
+										<option value="category.php?id=<?php echo $id ?>&sort=priceA">Price (Low &gt; High)</option>
+
+
+										<option value="category.php?id=<?php echo $id ?>&sort=priceD">Price (High &gt; Low)</option>
+									<?php } ?>
 								</select>
 							</div>
 						</div>
@@ -401,270 +450,51 @@ if (isset($_GET['sort'])) {
 						<div class="row">
 							<?php
 							foreach ($productList as $item) {
-								$productPrice = number_format($item['product_price'],2);
+								$productPrice = number_format($item['product_price'], 2);
 								$productPath = strtolower(str_replace(' ', '-', $item['product_name'])) . '-' . $item['product_id'];
 							?>
-							<div class="product-layout product-list col-xs-12">
-								<div class="product-thumb row">
-									<div class="image"> <a href=""> <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" /> 
-									<!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01--354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" /> </a> -->
+								<div class="product-layout product-list col-xs-12">
+									<div class="product-thumb row">
+										<div class="image"> <a href=""> <img class="image_thumb" src="./image/cache/catalog/demo/product/<?php echo $item['product_picture'] ?>" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" />
+												<!-- <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/01--354x460.jpg" title="aliquam quaerat voluptatem" alt="aliquam quaerat voluptatem" /> </a> -->
 
-										
-										<div class="button-group">
-											<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
 
-												<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
-												</span><span class="loading"><i class="material-icons">cached</i></span></button>
-											<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
-												<span title="Add to Wish List">Add to Wish List</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											
+												<div class="button-group">
+													<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('42')">
+
+														<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
+														</span><span class="loading"><i class="material-icons">cached</i></span></button>
+													<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('42');"><i class="material-icons icon-wishlist">favorite_border</i>
+														<span title="Add to Wish List">Add to Wish List</span>
+														<span class="loading"><i class="material-icons">cached</i></span>
+													</button>
+
+												</div>
 										</div>
-									</div>
-									<div class="thumb-description">
-										<div class="caption">
-											<div class="product-description">
-												<h4><a href="product.php?=<?php echo $productPath; ?>"><?php echo $item['product_name']; ?></a></h4>
-												<p class="description"><?php echo $item['product_description']; ?></p>
-											</div>
-											<div class="product-price-and-shipping">
-												<div class="price">
-												$<?php echo $productPrice ?>
+										<div class="thumb-description">
+											<div class="caption">
+												<div class="product-description">
+													<h4><a href="product.php?=<?php echo $productPath; ?>"><?php echo $item['product_name']; ?></a></h4>
+													<p class="description"><?php $str= substr($item['product_description'],0,100);echo $str.'...'; 
+																			?></p>
+												</div>
+												<div class="product-price-and-shipping">
+													<div class="price">
+														$<?php echo $productPrice ?>
 
-													<!-- <span class="price-tax">Ex Tax: $100.00</span> -->
+														<!-- <span class="price-tax">Ex Tax: $100.00</span> -->
+													</div>
+
 												</div>
 
 											</div>
-
 										</div>
 									</div>
 								</div>
-							</div>
 							<?php
 							}
 							?>
-							<!-- <div class="product-layout product-list col-xs-12">
-								<div class="product-thumb row">
-									<div class="image"> <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=30"> <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/02-354x460.jpg" title="aliquam quaerat voluptem" alt="aliquam quaerat voluptem" /> <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/02--354x460.jpg" title="aliquam quaerat voluptem" alt="aliquam quaerat voluptem" /> </a>
 
-										<div class="button-group">
-											<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('30')">
-
-												<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
-												</span><span class="loading"><i class="material-icons">cached</i></span></button>
-											<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('30');"><i class="material-icons icon-wishlist">favorite_border</i>
-												<span title="Add to Wish List">Add to Wish List</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-compare" title="Add to compare" onclick="compare.add('30');"><i class="material-icons icon-exchange">equalizer</i>
-												<span title="Add to compare">Add to compare</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=30')"><i class="material-icons quick_view_icon">visibility</i>
-												<span title=""></span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-										</div>
-									</div>
-									<div class="thumb-description">
-										<div class="caption">
-											<div class="product-description">
-												<h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=30">aliquam quaerat voluptem</a></h4>
-												<p class="description">Canon's press material for the EOS 5D states that it 'defines (a) new D-SLR category', while we're n..</p>
-											</div>
-											<div class="product-price-and-shipping">
-												<div class="price">
-													$122.00
-
-													<span class="price-tax">Ex Tax: $100.00</span>
-												</div>
-
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="product-layout product-list col-xs-12">
-								<div class="product-thumb row">
-									<div class="image"> <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=47"> <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/03-354x460.jpg" title="aliquam quat voluptatem" alt="aliquam quat voluptatem" /> <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/03--354x460.jpg" title="aliquam quat voluptatem" alt="aliquam quat voluptatem" /> </a>
-
-										<div class="button-group">
-											<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('47')">
-
-												<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
-												</span><span class="loading"><i class="material-icons">cached</i></span></button>
-											<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('47');"><i class="material-icons icon-wishlist">favorite_border</i>
-												<span title="Add to Wish List">Add to Wish List</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-compare" title="Add to compare" onclick="compare.add('47');"><i class="material-icons icon-exchange">equalizer</i>
-												<span title="Add to compare">Add to compare</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=47')"><i class="material-icons quick_view_icon">visibility</i>
-												<span title=""></span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-										</div>
-									</div>
-									<div class="thumb-description">
-										<div class="caption">
-											<div class="product-description">
-												<h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=47">aliquam quat voluptatem</a></h4>
-												<p class="description">Stop your co-workers in their tracks with the stunning new 30-inch diagonal HP LP3065 Flat Panel Mon..</p>
-											</div>
-											<div class="product-price-and-shipping">
-												<div class="price">
-													$122.00
-
-													<span class="price-tax">Ex Tax: $100.00</span>
-												</div>
-
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="product-layout product-list col-xs-12">
-								<div class="product-thumb row">
-									<div class="image"> <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=41"> <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05-354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" /> <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/05--354x460.jpg" title="magni dolores eosquies" alt="magni dolores eosquies" /> </a>
-
-										<div class="rating">
-											<span class="fa-stack"><i class="material-icons star_on">star</i></span>
-											<span class="fa-stack"><i class="material-icons star_on">star</i></span>
-											<span class="fa-stack"><i class="material-icons star_on">star</i></span>
-											<span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
-											<span class="fa-stack"><i class="material-icons star_off">star_border</i></span>
-										</div>
-										<div class="button-group">
-											<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('41')">
-
-												<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
-												</span><span class="loading"><i class="material-icons">cached</i></span></button>
-											<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('41');"><i class="material-icons icon-wishlist">favorite_border</i>
-												<span title="Add to Wish List">Add to Wish List</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-compare" title="Add to compare" onclick="compare.add('41');"><i class="material-icons icon-exchange">equalizer</i>
-												<span title="Add to compare">Add to compare</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=41')"><i class="material-icons quick_view_icon">visibility</i>
-												<span title=""></span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-										</div>
-									</div>
-									<div class="thumb-description">
-										<div class="caption">
-											<div class="product-description">
-												<h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=41">magni dolores eosquies</a></h4>
-												<p class="description">Just when you thought iMac had everything, now there´s even more. More powerful Intel Core 2 Duo pro..</p>
-											</div>
-											<div class="product-price-and-shipping">
-												<div class="price">
-													$122.00
-
-													<span class="price-tax">Ex Tax: $100.00</span>
-												</div>
-
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="product-layout product-list col-xs-12">
-								<div class="product-thumb row">
-									<div class="image"> <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=36"> <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/06-354x460.jpg" title="neque porro quisquam" alt="neque porro quisquam" /> <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/06--354x460.jpg" title="neque porro quisquam" alt="neque porro quisquam" /> </a>
-
-										<div class="button-group">
-											<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('36')">
-
-												<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
-												</span><span class="loading"><i class="material-icons">cached</i></span></button>
-											<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('36');"><i class="material-icons icon-wishlist">favorite_border</i>
-												<span title="Add to Wish List">Add to Wish List</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-compare" title="Add to compare" onclick="compare.add('36');"><i class="material-icons icon-exchange">equalizer</i>
-												<span title="Add to compare">Add to compare</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=36')"><i class="material-icons quick_view_icon">visibility</i>
-												<span title=""></span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-										</div>
-									</div>
-									<div class="thumb-description">
-										<div class="caption">
-											<div class="product-description">
-												<h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=36">neque porro quisquam</a></h4>
-												<p class="description">Video in your pocket.
-
-													Its the small iPod with one very big idea: video. The worlds most popula..</p>
-											</div>
-											<div class="product-price-and-shipping">
-												<div class="price">
-													$122.00
-
-													<span class="price-tax">Ex Tax: $100.00</span>
-												</div>
-
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div>
-							<div class="product-layout product-list col-xs-12">
-								<div class="product-thumb row">
-									<div class="image"> <a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=45"> <img class="image_thumb" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11-354x460.jpg" title="quis autem veleuminium" alt="quis autem veleuminium" /> <img class="image_thumb_swap" src="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/image/cache/catalog/demo/product/11--354x460.jpg" title="quis autem veleuminium" alt="quis autem veleuminium" /> </a>
-
-										<div class="button-group">
-											<button class="btn-cart " type="button" title="Add to Cart" onclick="cart.add('45')">
-
-												<i class="material-icons">shopping_cart</i><span class="hidden-xs hidden-sm hidden-md">Add to Cart
-												</span><span class="loading"><i class="material-icons">cached</i></span></button>
-											<button class="btn-wishlist" title="Add to Wish List" onclick="wishlist.add('45');"><i class="material-icons icon-wishlist">favorite_border</i>
-												<span title="Add to Wish List">Add to Wish List</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-compare" title="Add to compare" onclick="compare.add('45');"><i class="material-icons icon-exchange">equalizer</i>
-												<span title="Add to compare">Add to compare</span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-											<button class="btn-quickview" type="button" title="" onclick="tt_quickview.ajaxView('https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=45')"><i class="material-icons quick_view_icon">visibility</i>
-												<span title=""></span>
-												<span class="loading"><i class="material-icons">cached</i></span>
-											</button>
-										</div>
-									</div>
-									<div class="thumb-description">
-										<div class="caption">
-											<div class="product-description">
-												<h4><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=product/product&amp;path=66&amp;product_id=45">quis autem veleuminium</a></h4>
-												<p class="description">Latest Intel mobile architecture
-
-													Powered by the most advanced mobile processors from Intel, ..</p>
-											</div>
-											<div class="product-price-and-shipping">
-												<div class="price">
-													$2,000.00
-
-													<span class="price-tax">Ex Tax: $2,000.00</span>
-												</div>
-
-											</div>
-
-										</div>
-									</div>
-								</div>
-							</div> -->
 							<script>
 								jQuery(document).ready(function($) {
 									$(".item-countdown").each(function() {
@@ -681,9 +511,13 @@ if (isset($_GET['sort'])) {
 					<!-- Category products END -->
 					<!-- Category pagination START -->
 					<div class="category-pagination">
-						<div class="col-xs-6 text-left">Showing 1 to 6 of 6 (1 Pages)</div>
-						<div class="col-xs-6 text-right"></div>
+						<div class="col-xs-6 text-left">Showing 1 to <?php echo $perPage?> of <?php echo $totalRow?> (<?php echo $page?> Pages)</div>
+
+						<div class="col-xs-6 text-right">
+							<?php echo $pageLinks ?>
+						</div>
 					</div>
+
 					<!-- Category pagination END -->
 					<script>
 						var Tawk_API = {},
@@ -927,8 +761,7 @@ if (isset($_GET['sort'])) {
 		</footer>
 	</div>
 
-	<script>
-		
+	<!-- <script>
 		var tt_live_search = {
 			selector: '#search input[name=\'search\']',
 			text_no_matches: 'There are no products to list in this category.',
@@ -1028,8 +861,7 @@ if (isset($_GET['sort'])) {
 			});
 		});
 		//
-		
-	</script>
+	</script> -->
 
 
 	<!--

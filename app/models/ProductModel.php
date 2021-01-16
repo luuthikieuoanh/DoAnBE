@@ -56,24 +56,46 @@ class ProductModel extends Db
          return parent::select($sql);
      }
          // Tìm sản phẩm theo từ khóa
-    public function searchProducts($keyword)
+         public function searchProducts($keyword)
+         {
+           
+             $sql = parent::$connection->prepare("SELECT * FROM products WHERE product_name LIKE ? ");
+             $search = "%{$keyword}%";
+             $sql->bind_param('s', $search);
+             return parent::select($sql);
+         }
+    public function searchProductsByPage($keyword,$page,$perPage)
     {
-        $sql = parent::$connection->prepare("SELECT * FROM products WHERE product_name LIKE ?");
+        $start = ($page - 1) * $perPage;
+        $sql = parent::$connection->prepare("SELECT * FROM products WHERE product_name LIKE ? LIMIT ?,?");
         $search = "%{$keyword}%";
-        $sql->bind_param('s', $search);
+        $sql->bind_param('sii', $search,$start,$perPage);
         return parent::select($sql);
     }
+
+         // Tìm sản phẩm theo từ khóa
+         public function searchProductsASC($keyword,$page,$perPage)
+         {
+             $start = ($page - 1) * $perPage;
+             $sql = parent::$connection->prepare("SELECT * FROM products WHERE product_name LIKE ? LIMIT ?,?");
+             $search = "%{$keyword}%";
+             $sql->bind_param('sii', $search,$start,$perPage);
+             return parent::select($sql);
+         }
     //Sap xep
-    public function sortCategoryDECS($id,$x)
+    public function sortCategoryDECS($id,$x,$page,$perPage)
     {
-        $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ? ORDER BY products.$x DESC");
-        $sql->bind_param('i',$id);
+        $start = ($page - 1) * $perPage;
+        $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ? ORDER BY products.$x DESC LIMIT ?,?");
+        $sql->bind_param('iii',$id,$start,$perPage);
         return parent::select($sql);
     }
-    public function sortCategoryASC($id,$x)
+    public function sortCategoryASC($id,$x,$page,$perPage)
     {
-        $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ? ORDER BY products.$x ASC");
-        $sql->bind_param('i',$id);
+        $start = ($page - 1) * $perPage;
+
+        $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ? ORDER BY products.$x ASC LIMIT ?,?");
+        $sql->bind_param('iii',$id,$start,$perPage);
         return parent::select($sql);
     }
      //Them san pham
@@ -98,5 +120,12 @@ class ProductModel extends Db
         $sql = parent::$connection->prepare("UPDATE `products` SET `product_name`=?, `product_description`=?, `product_price`=?, `product_picture`=?, `product_qty`=? WHERE `product_id` = ?");
         $sql->bind_param('ssisii', $productName, $productDescription, $productPrice, $productPhoto, $qty, $productID);
         return $sql->execute();
+    }
+    public function getProductsByCategoryPage($categoryId,$page,$perPage)
+    {
+        $start = ($page - 1) * $perPage;
+        $sql = parent::$connection->prepare("SELECT * FROM products INNER JOIN products_categories ON products.product_id = products_categories.product_id WHERE products_categories.category_id = ? LIMIT ?,?");
+        $sql->bind_param('iii', $categoryId,$start,$perPage);
+        return parent::select($sql);
     }
 }
