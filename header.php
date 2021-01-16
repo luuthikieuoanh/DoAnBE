@@ -37,14 +37,14 @@ $categoryList = $categoryModel->getCategories();
                                 </form>
                             </div>
                         </li>
-                        <li class="account-nav dropdown header_user_info"><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/account" title="Account" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons user">perm_identity</i><span class="ttuserheading">Account</span><i class="material-icons expand-more">expand_more</i></a>
+                        <li class="account-nav dropdown header_user_info"><a href="#" title="Account" class="dropdown-toggle" data-toggle="dropdown"><i class="material-icons user">perm_identity</i><span class="ttuserheading">Account</span><i class="material-icons expand-more">expand_more</i></a>
                             <ul class="dropdown-menu dropdown-menu-right account-link-toggle">
                                 <?php if (!isset($_SESSION['email'])) { ?>
                                     <li><a href="login.php"><i class="material-icons">lock</i> Login</a></li>
                                     <li><a href="register.php"><i class='material-icons reg-person'>person</i> Register</a></li>
                                     <!-- <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons favorite">favorite</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li> -->
                                 <?php } else { ?>
-                                    <li><a href="account.php?id=<?php echo $_SESSION['id']?>"><i class='material-icons ma-user'>perm_identity</i> My account</a></li>
+                                    <li><a href="account.php?id=<?php echo $_SESSION['id'] ?>"><i class='material-icons ma-user'>perm_identity</i> My account</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/order"><i class='material-icons calendar-today'>calendar_today</i> Order History</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/transaction"><i class='material-icons credit-card'>credit_card</i> Transactions</a></li>
                                     <li><a href="https://demo.templatetrip.com/Opencart/OPC01/OPC009/OPC04/index.php?route=account/wishlist" id="wishlist-total" title="Wish List (0)"><i class="material-icons icon-wishlist">favorite_border</i> <span class="hidden-sm hidden-md">Wish List (0)</span></a></li>
@@ -94,7 +94,7 @@ $categoryList = $categoryModel->getCategories();
                                                             <ul class="list-unstyled childs_1 mega-dropdown-menu columns-4" style="width: 200px;">
 
                                                                 <li class="dropdown first" style="width: 25%;">
-                                                                    
+
 
                                                                     <div class="dropdown-menu">
                                                                         <div class="dropdown-inner">
@@ -102,7 +102,7 @@ $categoryList = $categoryModel->getCategories();
                                                                                 <?php
                                                                                 for ($i = 0; $i < count($category_List); $i++) {
                                                                                 ?>
-                                                                                    <li><a href="category.php?id=<?php echo $category_List[$i]['category_id']?>-<?php echo $category_List[$i]['category_in_id']?>">
+                                                                                    <li><a href="category.php?id=<?php echo $category_List[$i]['category_id'] ?>-<?php echo $category_List[$i]['category_in_id'] ?>">
                                                                                             <?php echo $category_List[$i]['category_name'];    ?></a>
                                                                                     </li>
                                                                                 <?php
@@ -121,7 +121,7 @@ $categoryList = $categoryModel->getCategories();
                                             } else {
                                             ?>
                                                 <li class="TT-Sub-List">
-                                                    <a href="category.php?id=<?php echo $item['category_id']?>"><?php echo $item['category_name']; ?></a>
+                                                    <a href="category.php?id=<?php echo $item['category_id'] ?>"><?php echo $item['category_name']; ?></a>
                                                 </li>
                                             <?php
                                             }
